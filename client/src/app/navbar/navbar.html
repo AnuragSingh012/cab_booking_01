@@ -1,4 +1,4 @@
-<header>
+<header style="width: 100%; position: fixed; background-color: white; z-index:100">
   <nav
     style="
       display: flex;
@@ -10,8 +10,9 @@
   >
     <!-- Left -->
     <div style="display: flex; gap: 30px; align-items: center">
-      <div routerLink="" style="cursor: pointer">
-        <img src="" alt="Logo" />
+      <div routerLink="" style="cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;">
+        <img src="logo.png" style="width: 100px; height: 40px; object-fit: contain;" alt="Logo" />
+        <h1 style="font-weight: 800; font-size: 30px;">SafarGo</h1>
       </div>
 
       <div style="display: flex; gap: 10px">
@@ -27,7 +28,7 @@
 
         <a
           routerLink="about"
-          style="text-decoration: none; font-weight: 500; color: black"
+          style="text-decoration: none; font-weight: 700; color: black"
         >
           About
         </a>

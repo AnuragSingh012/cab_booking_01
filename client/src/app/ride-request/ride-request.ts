@@ -64,6 +64,8 @@ export class RideRequest {
     ).subscribe((res: any) => {
       this.dropSuggestions = res || [];
     });
+
+    // this.rideService.setRideDetails('40','10');
   }
 
   onPickupChange(value: string) {
@@ -115,38 +117,53 @@ export class RideRequest {
 
   checkoutDetails() {
 
-    if (!this.selectedValue) return;
+  if (!this.selectedValue) return;
 
-    this.rideService.rideDetails$
-      .pipe(take(1))
-      .subscribe(details => {
+  this.rideService.rideDetails$
+    .pipe(take(1))
+    .subscribe(details => {
 
-        if (!details) return;
+      if (!details) return;
 
-        let fare = 0;
+      const distance = Number(details.distance);
 
-        if (this.selectedValue === 'auto') {
-          fare = 20 + Number(details.distance) * 12;
-        } else if (this.selectedValue === 'bike') {
-          fare = 20 + Number(details.distance) * 7;
-        } else if (this.selectedValue === 'suv') {
-          fare = 20 + Number(details.distance) * 19;
-        }
+      let fare = 0;
 
-        const gst = fare * 0.18;
+      switch (this.selectedValue) {
+        case 'mini':
+          fare = 50 + distance * 10;
+          break;
 
-        this.rideCheckoutDetails = {
-          pickup: this.pickup,
-          drop: this.drop,
-          distance: details.distance,
-          vehicle: this.selectedValue,
-          fare: Number(fare.toFixed(2)),
-          gst: Number(gst.toFixed(2))
-        };
+        case 'sedan':
+          fare = 70 + distance * 14;
+          break;
 
-        console.log('Checkout Details:', this.rideCheckoutDetails);
-      });
-  }
+        case 'suv':
+          fare = 100 + distance * 18;
+          break;
+
+        case 'premium':
+          fare = 150 + distance * 25;
+          break;
+
+        default:
+          return;
+      }
+
+      const gst = fare * 0.18;
+
+      this.rideCheckoutDetails = {
+        pickup: this.pickup,
+        drop: this.drop,
+        distance: details.distance,
+        vehicle: this.selectedValue,
+        fare: Number(fare.toFixed(2)),
+        gst: Number(gst.toFixed(2))
+      };
+
+      console.log('Checkout Details:', this.rideCheckoutDetails);
+    });
+}
 
   bookRide() {
     this.route.navigate(['ride-booked']);
