@@ -61,40 +61,40 @@
 
     <div class="form-container">
 
-        <!-- Auto -->
-        <label class="vcard" [class.active]="selectedValue === 'auto'">
-            <input type="radio" name="vehicle" value="auto" [(ngModel)]="selectedValue">
+        <!-- Mini -->
+        <label class="vcard" [class.active]="selectedValue === 'mini'">
+            <input type="radio" name="vehicle" value="mini" [(ngModel)]="selectedValue">
 
             <div class="vcard-content">
                 <div class="left">
-                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/auto-rickshaw-10831542-8778534.png">
+                    <img src="mini.png">
                     <div class="vehicle-info">
-                        <span class="name">Auto</span>
-                        <span class="meta">{{ (rideDetails$|async)?.distance }} KM</span>
+                        <span class="name">Mini</span>
+                        <span class="meta">Affordable • 4 seats</span>
                     </div>
                 </div>
 
                 <p class="price">
-                    ₹ {{ 20 + (rideDetails$|async)?.distance * 12 | number }}
+                    ₹ {{ 50 + (rideDetails$|async)?.distance * 10 | number }}
                 </p>
             </div>
         </label>
 
-        <!-- Bike -->
-        <label class="vcard" [class.active]="selectedValue === 'bike'">
-            <input type="radio" name="vehicle" value="bike" [(ngModel)]="selectedValue">
+        <!-- Sedan -->
+        <label class="vcard" [class.active]="selectedValue === 'sedan'">
+            <input type="radio" name="vehicle" value="sedan" [(ngModel)]="selectedValue">
 
             <div class="vcard-content">
                 <div class="left">
-                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/motorcycle-3d-icon-png-download-9656130.png">
+                    <img src="sedan.png">
                     <div class="vehicle-info">
-                        <span class="name">Bike</span>
-                        <span class="meta">{{ (rideDetails$|async)?.distance }} KM</span>
+                        <span class="name">Sedan</span>
+                        <span class="meta">Comfort • 4 seats</span>
                     </div>
                 </div>
 
                 <p class="price">
-                    ₹ {{ 20 + (rideDetails$|async)?.distance * 7 | number }}
+                    ₹ {{ 70 + (rideDetails$|async)?.distance * 14 | number }}
                 </p>
             </div>
         </label>
@@ -107,13 +107,32 @@
                 <div class="left">
                     <img src="suv.png">
                     <div class="vehicle-info">
-                        <span class="name">SUV</span>
-                        <span class="meta">{{ (rideDetails$|async)?.distance }} KM</span>
+                        <span class="name">SUV XL</span>
+                        <span class="meta">Spacious • 6 seats</span>
                     </div>
                 </div>
 
                 <p class="price">
-                    ₹ {{ 20 + (rideDetails$|async)?.distance * 19 | number }}
+                    ₹ {{ 100 + (rideDetails$|async)?.distance * 18 | number }}
+                </p>
+            </div>
+        </label>
+
+        <!-- Premium -->
+        <label class="vcard" [class.active]="selectedValue === 'premium'">
+            <input type="radio" name="vehicle" value="premium" [(ngModel)]="selectedValue">
+
+            <div class="vcard-content">
+                <div class="left">
+                    <img src="premium.png">
+                    <div class="vehicle-info">
+                        <span class="name">Premium</span>
+                        <span class="meta">Luxury • 4 seats</span>
+                    </div>
+                </div>
+
+                <p class="price">
+                    ₹ {{ 150 + (rideDetails$|async)?.distance * 25 | number }}
                 </p>
             </div>
         </label>
@@ -126,24 +145,29 @@
 </div>
 }
 @else{
-    <div>
+<div>
     <h1 class="title">Request a ride</h1>
+    <p class="subtitle">
+        Fast, safe, and affordable rides at your fingertips.
+    </p>
+
 
     <div class="form-container">
 
         <!-- Pickup -->
         <div class="input-wrapper">
-            <input 
+            <input
                 [(ngModel)]="pickup"
                 (input)="onPickupChange(pickup)"
                 class="input"
-                type="text" 
+                type="text"
                 placeholder="Pickup location">
 
             <div *ngIf="pickupSuggestions.length" class="dropdown">
-                <div *ngFor="let place of pickupSuggestions"
-                     (click)="selectPickup(place)"
-                     class="dropdown-item">
+                <div
+                    *ngFor="let place of pickupSuggestions"
+                    (click)="selectPickup(place)"
+                    class="dropdown-item">
                     {{ place.display_name }}
                 </div>
             </div>
@@ -151,17 +175,18 @@
 
         <!-- Drop -->
         <div class="input-wrapper">
-            <input 
+            <input
                 [(ngModel)]="drop"
                 (input)="onDropChange(drop)"
                 class="input"
-                type="text" 
+                type="text"
                 placeholder="Dropoff location">
 
             <div *ngIf="dropSuggestions.length" class="dropdown">
-                <div *ngFor="let place of dropSuggestions"
-                     (click)="selectDrop(place)"
-                     class="dropdown-item">
+                <div
+                    *ngFor="let place of dropSuggestions"
+                    (click)="selectDrop(place)"
+                    class="dropdown-item">
                     {{ place.display_name }}
                 </div>
             </div>
@@ -169,17 +194,18 @@
 
         <button (click)="rideRequest()" class="search-btn">
             @if(loading$ | async) {
-                Searching Rides...
+                Searching rides...
             } @else {
                 Search
             }
         </button>
+
         @if(msg$ | async; as msg) {
-    <div class="message error">
-        <span class="icon">⚠</span>
-        <span>{{ msg }}</span>
-    </div>
-}
+            <div class="message error">
+                <span class="icon">⚠</span>
+                <span>{{ msg }}</span>
+            </div>
+        }
     </div>
 </div>
 }
