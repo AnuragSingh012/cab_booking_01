@@ -59,7 +59,8 @@ export class Map {
       `${start.lng},${start.lat};${end.lng},${end.lat}` +
       `?overview=full&geometries=geojson`;
 
-    this.http.get(url).subscribe((res: any) => {
+    this.http.get(url).subscribe({
+      next:(res: any) => {
       const route = res.routes[0];
 
       const distanceKm = (route.distance / 1000).toFixed(2);
@@ -76,6 +77,12 @@ export class Map {
       const latlngs = coords.map((c: any) => [c[1], c[0]]);
 
       this.drawRoute(latlngs, start, end);
+    },
+    error: (err) => {
+      console.log("Route Api Failed", err);
+      this.rideService.setLoading(false);
+      this.rideService.setMsg("Router API Failed");
+    }
     });
   }
 
