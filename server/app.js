@@ -182,29 +182,6 @@ app.get("/my-bookings", authMiddleware, async (req, res) => {
   }
 });
 
-app.patch("/booking-status/:id", authMiddleware, async (req, res) => {
-  try {
-    const { status, cancelReason, rating, feedback } = req.body;
-
-    const booking = await Booking.findByIdAndUpdate(
-      req.params.id,
-      {
-        status,
-        cancelReason,
-        rating,
-        feedback
-      },
-      { new: true }
-    );
-
-    res.json(booking);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      message: "Status update failed"
-    });
-  }
-});
 
 
 app.get("/driver/dashboard", authMiddleware, async (req, res) => {
@@ -320,24 +297,13 @@ app.patch("/booking/:id", authMiddleware, async (req, res) => {
     }
 
     const { status, completedAt } = req.body;
+    console.log(status);
+    console.log(completedAt);
 
     booking.status = status;
 
     if (status === "accepted") {
       booking.driverId = req.user.id;
-
-      const user = await User.findById(req.user.id);
-      const driver = await Driver.findOne({
-        userId: req.user.id
-      });
-
-      booking.driver = {
-        name: user.name,
-        vehicle: driver.vehicleType,
-        vehicleNo: driver.vehicleNumber,
-        rating: driver.rating || 0,
-        phone: "9876543210"
-      };
     }
 
     if (completedAt) {

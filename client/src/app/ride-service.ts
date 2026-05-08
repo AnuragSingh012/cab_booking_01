@@ -89,7 +89,6 @@ export class RideService {
 
 
   bookingRide(data: any) {
-    console.log("inside bookingRide");
     const token = localStorage.getItem('token');
 
     return this.http.post(
@@ -103,11 +102,11 @@ export class RideService {
     );
   }
 
-  updateBookingStatus(id: string, data: any) {
+  cancelBooking(id: string, data: any) {
   const token = localStorage.getItem('token');
 
   return this.http.patch(
-    `http://localhost:3000/booking-status/${id}`,
+    `http://localhost:3000/booking/${id}`,
     data,
     {
       headers: new HttpHeaders({
@@ -116,6 +115,10 @@ export class RideService {
     }
   );
 }
+
+  bookingProgress(rideID: string){
+    return this.http.get(rideID);
+  }
 
 
   getMyBookings() {

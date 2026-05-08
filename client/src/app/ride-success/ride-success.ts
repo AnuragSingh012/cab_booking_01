@@ -55,31 +55,33 @@ export class RideSuccess implements OnInit, OnDestroy {
 
     // use createdAt from DB
     const created = new Date(ride.createdAt).getTime();
-    const expiresAt = created + 60000;
+    const expiresAt = created + 600000;
 
-    const total = 60000;
+    const total = 700000;
     const remaining = expiresAt - Date.now();
 
     if (remaining <= 0) {
       this.activeRide.update(r => ({
         ...r,
         status: 'cancelled',
-        cancelReason: 'No driver accepted'
       }));
 
       this.progress.set(0);
+      this.cancelRide();
       return;
     }
 
     this.progress.set((remaining / total) * 100);
+
+    this.rideService.bookingProgress(ride._id)
+    .subscribe()
   }
 
   cancelRide() {
   const ride = this.activeRide();
 
-  this.rideService.updateBookingStatus(ride._id, {
+  this.rideService.cancelBooking(ride._id, {
     status: 'cancelled',
-    cancelReason: 'Cancelled by user'
   }).subscribe((updated: any) => {
     this.activeRide.set(updated);
   });

@@ -147,7 +147,7 @@
             </span>
         </div>
 
-        @if(activeRide()?.status === 'ACCEPTED'){
+        @if(activeRide()?.status === 'accepted'){
         <button
             class="accept-btn full-btn"
             (click)="startRide()">
@@ -155,7 +155,7 @@
         </button>
         }
 
-        @if(activeRide()?.status === 'STARTED'){
+        @if(activeRide()?.status === 'started'){
         <button
             class="accept-btn full-btn"
             (click)="completeRide()">
