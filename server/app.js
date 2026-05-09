@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const User = require("./models/user");
 const Driver = require("./models/driver");
 const Booking = require("./models/booking");
+const Review = require("./models/review");
 
 app.use(cors());
 app.use(express.json());
@@ -76,7 +77,6 @@ app.post("/auth/sign-up", async (req, res) => {
 });
 
 app.post("/auth/login", async (req, res) => {
-  console.log(req.body);
   try {
     const { email, password } = req.body;
 
@@ -145,7 +145,6 @@ const authMiddleware = (req, res, next) => {
 
 
 app.post("/book-ride", authMiddleware, async (req, res) => {
-  console.log("here........");
   try {
     const booking = await Booking.create({
       ...req.body,
@@ -165,7 +164,6 @@ app.post("/book-ride", authMiddleware, async (req, res) => {
 });
 
 app.get("/my-bookings", authMiddleware, async (req, res) => {
-  console.log("my-bookings route hit");
 
   try {
     const bookings = await Booking.find({
@@ -208,12 +206,15 @@ app.get("/driver/dashboard", authMiddleware, async (req, res) => {
       }
     }).sort({ createdAt: -1 });
 
-    const reviews = await Booking.find({
-      driverId: req.user.id,
-      rating: { $exists: true }
-    })
-      .sort({ completedAt: -1 })
-      .limit(5);
+    
+
+      const reviews = await Review.find({
+  driverId: req.user.id
+})
+  .populate('bookingId', 'pickup drop total')
+  .sort({ createdAt: -1 })
+  .limit(5);
+
 
     const completed = await Booking.find({
       driverId: req.user.id,
@@ -297,8 +298,6 @@ app.patch("/booking/:id", authMiddleware, async (req, res) => {
     }
 
     const { status, completedAt } = req.body;
-    console.log(status);
-    console.log(completedAt);
 
     booking.status = status;
 
@@ -364,6 +363,29 @@ app.get("/user/booking/:id", async (req, res) => {
     res.status(500).json({
       message: "Error"
     });
+  }
+});
+
+
+app.post('/user/feedback', async (req, res) => {
+  try {
+    const { driverId, rating, feedback, bookingId } = req.body;
+
+    const review = await Review.create({
+      bookingId,
+      driverId,
+      rating,
+      feedback
+    });
+
+    res.status(201).json({
+      message: 'Feedback saved',
+      review
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal Server Error');
   }
 });
 

@@ -23,6 +23,15 @@ export class DriverDashboard implements OnInit, OnDestroy {
   activeRide = signal<any | null>(null);
   availableRide = signal<any | null>(null);
 
+  getAverageRating(): number {
+  const list = this.reviews();
+
+  if (!list.length) return 0;
+
+  const total = list.reduce((sum, r) => sum + r.rating, 0);
+  return total / list.length;
+}
+
   driver = signal({
     id: '',
     name: '',
@@ -85,6 +94,7 @@ export class DriverDashboard implements OnInit, OnDestroy {
           distance: data?.stats?.distance ?? 0,
           hours: data?.stats?.hours ?? 0
         });
+        console.log(this.reviews());
       },
       error: (err) => {
         console.log('dashboard error', err);

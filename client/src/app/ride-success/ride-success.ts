@@ -9,11 +9,12 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { RideService } from '../ride-service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-ride-success',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule,FormsModule],
   templateUrl: './ride-success.html',
   styleUrl: './ride-success.css',
 })
@@ -24,7 +25,7 @@ export class RideSuccess implements OnInit, OnDestroy {
   activeRide = signal<any>(null);
   progress = signal(100);
   rating = signal(0);
-  feedback = signal('');
+  feedbackText = '';
 
   private sub?: Subscription;
 
@@ -100,12 +101,24 @@ export class RideSuccess implements OnInit, OnDestroy {
   }
 
   submitFeedback() {
-    this.activeRide.update(r => ({
-      ...r,
+    const ride = this.activeRide();
+    console.log('Driver ID:', this.activeRide()?.driverId);
+    console.log('Rating:', this.rating());
+    console.log('Feedback:', this.feedbackText);
+
+    const data = {
+      bookingId: ride._id,
+      driverId: this.activeRide()?.driverId,
       rating: this.rating(),
-      feedback: this.feedback(),
-      reviewedAt: Date.now()
-    }));
+      feedback: this.feedbackText
+    }
+
+    this.rideService.submitFeedback(data).subscribe(
+      {
+        next: (res)=>console.log(res),
+        error: ()=> console.log("Error occured")
+      }
+    )
 
     alert('Feedback submitted');
     this.goHome();
