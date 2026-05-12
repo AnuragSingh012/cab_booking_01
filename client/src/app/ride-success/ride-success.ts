@@ -123,6 +123,16 @@ export class RideSuccess implements OnInit, OnDestroy {
     )
 
     this.notify.show("Feedback Submitted");
+    this.rideService.booking.set({
+  pickup: '',
+  drop: '',
+  distance: 0,
+  duration: 0,
+  fare: 0,
+  gst: 0,
+  total: 0,
+  vehicle: ''
+});
     this.goHome();
   }
 
