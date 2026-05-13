@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
