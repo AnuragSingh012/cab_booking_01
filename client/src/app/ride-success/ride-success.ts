@@ -1,32 +1,34 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  OnInit,
   OnDestroy,
+  OnInit,
+  inject,
   signal,
-  inject
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
-import { RideService } from '../ride-service';
-import { FormsModule } from '@angular/forms';
+
 import { PopupService } from '../popup-service';
+import { RideService } from '../ride-service';
 
 @Component({
   selector: 'app-ride-success',
   standalone: true,
-  imports: [RouterModule, CommonModule,FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './ride-success.html',
   styleUrl: './ride-success.css',
 })
 export class RideSuccess implements OnInit, OnDestroy {
-  router = inject(Router);
-  rideService = inject(RideService);
-  notify=inject(PopupService);
+  private router = inject(Router);
+  private rideService = inject(RideService);
+  private notify = inject(PopupService);
 
   activeRide = signal<any>(null);
   progress = signal(100);
   rating = signal(0);
+
   feedbackText = '';
 
   private sub?: Subscription;
@@ -35,14 +37,14 @@ export class RideSuccess implements OnInit, OnDestroy {
     const booking = history.state.booking;
 
     if (!booking) {
-      this.router.navigate(['/']);
+      this.goHome();
       return;
     }
 
     this.activeRide.set(booking);
 
     this.sub = interval(500).subscribe(() => {
-      this.updateProgress();
+      this.updateRide();
     });
   }
 
@@ -50,53 +52,48 @@ export class RideSuccess implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-  updateProgress() {
+  updateRide() {
     const ride = this.activeRide();
 
     if (!ride) return;
-    // if (ride.status !== 'requested') return;
 
-    // use createdAt from DB
-    const created = new Date(ride.createdAt).getTime();
-    const expiresAt = created + 600000;
+    const createdTime = new Date(ride.createdAt).getTime();
+    const expiryTime = createdTime + 10 * 60 * 1000;
 
-    const total = 700000;
-    const remaining = expiresAt - Date.now();
+    const remaining = expiryTime - Date.now();
 
     if (remaining <= 0) {
-      this.activeRide.update(r => ({
-        ...r,
-        status: 'cancelled',
-      }));
-
       this.progress.set(0);
       this.cancelRide();
       return;
     }
 
-    this.progress.set((remaining / total) * 100);
+    const totalDuration = 10 * 60 * 1000;
 
-    this.rideService.bookingProgress(ride._id)
-  .subscribe((updated: any) => {
-    this.activeRide.update(r => ({
-      ...r,
-      ...updated.booking,
-      driver: updated.driver
-    }));
+    this.progress.set((remaining / totalDuration) * 100);
 
-    console.log(updated);
-  });
+    this.rideService.bookingProgress(ride._id).subscribe({
+      next: (res: any) => {
+        this.activeRide.update(current => ({
+          ...current,
+          ...res.booking,
+          driver: res.driver,
+        }));
+      },
+    });
   }
 
   cancelRide() {
-  const ride = this.activeRide();
+    const rideId = this.activeRide()?._id;
 
-  this.rideService.cancelBooking(ride._id, {
-    status: 'cancelled',
-  }).subscribe((updated: any) => {
-    this.activeRide.set(updated);
-  });
-}
+    if (!rideId) return;
+
+    this.rideService
+      .cancelBooking(rideId, { status: 'cancelled' })
+      .subscribe((updated: any) => {
+        this.activeRide.set(updated);
+      });
+  }
 
   setRating(stars: number) {
     this.rating.set(stars);
@@ -104,43 +101,42 @@ export class RideSuccess implements OnInit, OnDestroy {
 
   submitFeedback() {
     const ride = this.activeRide();
-    console.log('Driver ID:', this.activeRide()?.driverId);
-    console.log('Rating:', this.rating());
-    console.log('Feedback:', this.feedbackText);
 
-    const data = {
+    if (!ride) return;
+
+    const payload = {
       bookingId: ride._id,
-      driverId: this.activeRide()?.driverId,
+      driverId: ride.driverId,
       rating: this.rating(),
-      feedback: this.feedbackText
-    }
+      feedback: this.feedbackText,
+    };
 
-    this.rideService.submitFeedback(data).subscribe(
-      {
-        next: (res)=>console.log(res),
-        error: ()=> console.log("Error occured")
-      }
-    )
+    this.rideService.submitFeedback(payload).subscribe({
+      next: () => {
+        this.notify.show('Feedback Submitted');
+        this.resetBooking();
+        this.goHome();
+      },
+      error: () => {
+        console.log('Error occurred');
+      },
+    });
+  }
 
-    this.notify.show("Feedback Submitted");
+  resetBooking() {
     this.rideService.booking.set({
-  pickup: '',
-  drop: '',
-  distance: 0,
-  duration: 0,
-  fare: 0,
-  gst: 0,
-  total: 0,
-  vehicle: ''
-});
-    this.goHome();
+      pickup: '',
+      drop: '',
+      distance: 0,
+      duration: 0,
+      fare: 0,
+      gst: 0,
+      total: 0,
+      vehicle: '',
+    });
   }
 
   goHome() {
-    this.router.navigate(['/']);
-  }
-
-  bookAgain() {
     this.router.navigate(['/']);
   }
 }
