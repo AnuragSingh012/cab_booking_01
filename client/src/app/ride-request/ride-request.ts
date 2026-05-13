@@ -23,9 +23,6 @@ export class RideRequest {
   rideService = inject(RideService);
   locationService = inject(LocationService);
 
-  loading$ = this.rideService.loading$;
-  msg$ = this.rideService.msg$;
-
   pickupSuggestions: any[] = [];
   dropSuggestions: any[] = [];
 
@@ -104,12 +101,11 @@ rideRequest() {
   const isLoggedIn = !!user && !!token;
 
   if (!this.pickup.trim() || !this.drop.trim()) {
-    this.rideService.setMsg('Please enter pickup and drop location');
 
     clearTimeout(this.msgTimeout);
 
     this.msgTimeout = setTimeout(() => {
-      this.rideService.setMsg('');
+      //clear msg here
     }, 3000);
 
     return;
@@ -135,10 +131,4 @@ rideRequest() {
   this.route.navigate(['/vehicle']);
 }
 
-
-
-  // bookRide() {
-  //   this.rideService.bookRide(this.rideCheckoutDetails);
-  //   this.route.navigate(['ride-booked']);
-  // }
 }

@@ -35,7 +35,7 @@ export class Checkout {
 
 
 bookRide() {
-  this.rideService.bookingRide(this.ride()).subscribe({
+  this.rideService.bookRide(this.ride()).subscribe({
     next: (res: any) => {
       this.router.navigate(
         ['/ride-booked'],

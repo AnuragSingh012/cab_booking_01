@@ -15,11 +15,8 @@ export class Map {
   private http = inject(HttpClient);
 
   loading = this.rideService.mapLoading;
-
   router=inject(Router);
-
   map: any;
-
   routeLine: any;
   pickupMarker: any;
   dropMarker: any;
@@ -78,6 +75,28 @@ export class Map {
     return this.http.get(url);
   }
 
+
+    //Convert names → route
+  getRouteFromNames(pickup: string, drop: string) {
+    this.rideService.mapLoading.set(true);
+
+  this.getCoordinates(pickup).subscribe((startRes: any) => {
+    const start = {
+      lat: +startRes[0].lat,
+      lng: +startRes[0].lon
+    };
+
+    this.getCoordinates(drop).subscribe((endRes: any) => {
+      const end = {
+        lat: +endRes[0].lat,
+        lng: +endRes[0].lon
+      };
+
+      this.getRoute(start, end);
+    });
+  });
+}
+
   //Get route
   getRoute(start: any, end: any) {
     const url =
@@ -109,8 +128,6 @@ export class Map {
     },
     error: (err) => {
       console.log("Route Api Failed", err);
-      this.rideService.setLoading(false);
-      this.rideService.setMsg("Router API Failed");
     }
     });
   }
@@ -161,28 +178,6 @@ export class Map {
   this.map.fitBounds(this.routeLine.getBounds());
   this.rideService.mapLoading.set(false);
   this.router.navigate(["vehicle"]);
-  this.rideService.setLoading(false);
 }
 
-  //Convert names → route
-  getRouteFromNames(pickup: string, drop: string) {
-    this.rideService.mapLoading.set(true);
-  this.rideService.setLoading(true);
-
-  this.getCoordinates(pickup).subscribe((startRes: any) => {
-    const start = {
-      lat: +startRes[0].lat,
-      lng: +startRes[0].lon
-    };
-
-    this.getCoordinates(drop).subscribe((endRes: any) => {
-      const end = {
-        lat: +endRes[0].lat,
-        lng: +endRes[0].lon
-      };
-
-      this.getRoute(start, end);
-    });
-  });
-}
 }

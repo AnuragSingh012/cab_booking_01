@@ -46,18 +46,14 @@
         </div>
 
         <button (click)="rideRequest()" class="search-btn">
-            @if(loading$ | async) {
-                Searching rides...
-            } @else {
                 Search
-            }
         </button>
 
-        @if(msg$ | async; as msg) {
+        <!-- @if(msg$ | async; as msg) {
             <div class="message error">
                 <span class="icon">⚠</span>
                 <span>{{ msg }}</span>
             </div>
-        }
+        } -->
     </div>
 </div>
