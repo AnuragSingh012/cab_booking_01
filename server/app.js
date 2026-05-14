@@ -333,11 +333,14 @@ app.get("/", (req, res) => {
 
 //----------------------------By Aditya-----------------------------
 
-app.patch("/driverLocation/:place", async (req, res) => {
+app.patch("/driverLocation/:place", authMiddleware,async (req, res) => {
+  console.log("hello");
+
+  const user = await User.findById(req.user.id);
+  const userId = user._id;
+  console.log("userId=", userId);
 
   const driverLocation = req.params.place;
-
-  let {userId} =  req.body;
   
   if(driverLocation){
     const updateLocation = await Driver.findOneAndUpdate(
@@ -348,7 +351,6 @@ app.patch("/driverLocation/:place", async (req, res) => {
 
     return res.status(200).json(updateLocation);
   }
-  // return res.status(203).json({messageee: req.params.place});
 })
 
 
