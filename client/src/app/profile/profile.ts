@@ -21,7 +21,8 @@ export class Profile {
   rideDetails = signal({
     totalRides: 0,
     distanceTravelled: 0,
-    totalSpent: 0
+    totalSpent: 0,
+    driverLocation: null
   });
 
   rideService = inject(RideService);
@@ -33,7 +34,6 @@ export class Profile {
   pickupSubject = new Subject<string>();
   locationService = inject(LocationService);
   driverService = inject(DriverService);
-  locationUpdated = '';
 
   ngOnInit() {
     const userData = localStorage.getItem('user');
@@ -71,23 +71,48 @@ export class Profile {
     this.pickupSubject.next(value);
   }
 
+  
+
   async selectPickup(place: any) {
     this.pickup = place.display_name;
     this.pickupSuggestions = [];
-    if(this.pickup){
-        
-      this.rideService.updateRide({
-          pickup: this.pickup,
-      });
-          this.driverService.addDirverLocation(this.pickup).subscribe(res=>{
-            console.log("location updated successfully", res);
-            
-          })
-    }
   }
 
+  editLocation = false;
+  
+  // updateLocation(){
+  //   this.editLocation = true;
+  //   let currentDetailsOfDriver = this.rideDetails();
 
+    
+  //   if(this.pickup)
+  //     {
+  //         this.driverService.addDirverLocation(this.pickup).subscribe(res=>{
+  //           console.log("location updated successfully",(res as any)?.driverLocation);
+  //           this.rideDetails().driverLocation = ((res as any).driverLocation);
+           
+  //           this.editLocation = false;
+  //         })
+  //     }
 
+  // }
+
+  updateLocation() {
+  this.editLocation = true;
+
+  console.log("pickup  ", this.pickup);
+  if(this.pickup){
+  this.driverService.addDirverLocation(this.pickup).subscribe((res: any) => {
+    console.log("Location updated successfully", res?.driverLocation);
+  
+      const currentData = this.rideDetails();
+      currentData.driverLocation = res.driverLocation;
+      this.rideDetails.set({ ...currentData });
+      this.pickup = '';
+      this.editLocation = false;
+    });
+  }
+}
 
 
 }
