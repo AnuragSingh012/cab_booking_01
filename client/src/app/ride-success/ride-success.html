@@ -1,119 +1,125 @@
-@if(activeRide()?.status === 'requested'){
 <div class="ride-page">
 
-    <h1 class="title">Searching for Driver</h1>
-    <p class="subtitle">We're finding the nearest available driver.</p>
+    @let ride = activeRide();
 
-    <div class="status-card searching-card">
+    @if(ride){
 
-        <div class="spinner"></div>
+        @switch (ride.status) {
 
-        <p>Looking for nearby drivers...</p>
+            @case ('requested') {
 
-        <div class="progress-wrapper">
-            <div class="progress-bar"
-                 [style.width.%]="progress()"></div>
-        </div>
+                <h1 class="title">Searching for Driver</h1>
 
-        <button class="cancel-btn"
-                (click)="cancelRide()">
-            Cancel Ride
-        </button>
+                <div class="status-card searching-card">
 
-    </div>
-</div>
-}
+                    <div class="spinner"></div>
 
-@else if(activeRide()?.status === 'accepted'){
-<div class="ride-page">
+                    <p>Looking for nearby drivers...</p>
 
-    <h1 class="title">Driver Found</h1>
+                    <div class="progress-wrapper">
+                        <div class="progress-bar"
+                             [style.width.%]="progress()">
+                        </div>
+                    </div>
 
-    <div class="driver-card">
+                    <button
+                        class="cancel-btn"
+                        (click)="cancelRide()">
+                        Cancel Ride
+                    </button>
 
-        <div class="avatar">
-            {{ activeRide()?.driver?.name?.charAt(0) || 'd' }}
-        </div>
+                </div>
+            }
 
-        <p>{{activeRide()?.driver?.name}}</p>
+            @case ('accepted') {
 
-        <p>
-            {{activeRide()?.driver?.vehicle}} •
-            {{activeRide()?.driver?.vehicleNo}}
-        </p>
+                <h1 class="title">Driver Found</h1>
 
-        <button class="cancel-btn"
-                (click)="cancelRide()">
-            Cancel Ride
-        </button>
+                <div class="driver-card">
 
-    </div>
-</div>
-}
+                    <div class="avatar">
+                        {{ ride.driver?.name?.charAt(0) || 'D' }}
+                    </div>
 
-@else if(activeRide()?.status === 'started'){
-<div class="ride-page">
+                    <p>{{ ride.driver?.name }}</p>
 
-    <h1 class="title">Ride Started</h1>
+                    <p>
+                        {{ ride.driver?.vehicle }}
+                        •
+                        {{ ride.driver?.vehicleNo }}
+                    </p>
 
-    <p>Enjoy your trip</p>
+                    <button
+                        class="cancel-btn"
+                        (click)="cancelRide()">
+                        Cancel Ride
+                    </button>
 
-    <div class="status-card">
+                </div>
+            }
 
-        <p>on trip</p>
+            @case ('started') {
 
-        <p>{{activeRide()?.pickup}} → {{activeRide()?.drop}}</p>
+                <h1 class="title">Ride Started</h1>
 
-    </div>
-</div>
-}
+                <div class="status-card">
 
-@else if(activeRide()?.status === 'completed'){
-<div class="ride-page">
+                    <p>On Trip</p>
 
-    <h1 class="title">Ride Completed</h1>
+                    <p>
+                        {{ ride.pickup }}
+                        →
+                        {{ ride.drop }}
+                    </p>
 
-    <p>Trip finished</p>
+                </div>
+            }
 
-    <div class="status-card">
+            @case ('completed') {
 
-        <p>₹ {{activeRide()?.total | number}}</p>
+                <h1 class="title">Ride Completed</h1>
 
-    </div>
+                <div class="status-card">
+                    <p>₹ {{ ride.total | number }}</p>
+                </div>
 
-    <div class="feedback-card">
+                <div class="feedback-card">
 
-        <div class="stars">
-            @for(star of [1,2,3,4,5]; track star){
-                <button
-                    (click)="setRating(star)"
-                    [class.active]="rating() >= star">
-                    ★
+                    <div class="stars">
+
+                        @for(star of [1,2,3,4,5]; track star){
+
+                            <button
+                                (click)="setRating(star)"
+                                [class.active]="rating() >= star">
+
+                                ★
+
+                            </button>
+                        }
+
+                    </div>
+
+                    <textarea
+                        [(ngModel)]="feedbackText"
+                        placeholder="Write your feedback...">
+                    </textarea>
+
+                    <button (click)="submitFeedback()">
+                        Submit
+                    </button>
+
+                </div>
+            }
+
+            @case ('cancelled') {
+
+                <h1 class="title">Ride Cancelled</h1>
+
+                <button (click)="goHome()">
+                    Book Again
                 </button>
             }
-        </div>
-
-        <textarea
-    [(ngModel)]="feedbackText"
-    placeholder="Write your feedback...">
-</textarea>
-
-        <button (click)="submitFeedback()">
-            Submit
-        </button>
-
-    </div>
+        }
+    }
 </div>
-}
-
-@else if(activeRide()?.status === 'cancelled'){
-<div class="ride-page">
-
-    <h1 class="title">Ride Cancelled</h1>
-
-    <button (click)="bookAgain()">
-        Book Again
-    </button>
-
-</div>
-}

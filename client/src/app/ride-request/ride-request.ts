@@ -1,9 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { RideService } from '../ride-service';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Subject, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
+
+import { Subject, debounceTime, switchMap, of } from 'rxjs';
+
+import { RideService } from '../ride-service';
 import { LocationService } from '../location-service';
 
 @Component({
@@ -15,19 +17,17 @@ import { LocationService } from '../location-service';
 })
 export class RideRequest {
 
-  router=inject(Router);
-  pickup: string = '';
-  drop: string = '';
-
-  route = inject(Router);
+  router = inject(Router);
   rideService = inject(RideService);
   locationService = inject(LocationService);
 
-  loading$ = this.rideService.loading$;
-  msg$ = this.rideService.msg$;
+  pickup = '';
+  drop = '';
 
   pickupSuggestions: any[] = [];
   dropSuggestions: any[] = [];
+
+  message=this.rideService.msg;
 
   pickupSubject = new Subject<string>();
   dropSubject = new Subject<string>();
@@ -36,51 +36,49 @@ export class RideRequest {
 
     const user = JSON.parse(localStorage.getItem('user') || 'null');
 
-  if (user?.role === 'driver') {
-    this.router.navigate(['/driver-dashboard']);
-    return;
-  }
+    if (user?.role === 'driver') {
+      this.router.navigate(['/driver-dashboard']);
+      return;
+    }
 
+    // Pickup Search
     this.pickupSubject.pipe(
       debounceTime(300),
-      distinctUntilChanged(),
       switchMap(value => {
-        if (!value || value.trim().length < 3) {
-          this.pickupSuggestions = [];
+
+        if (value.trim().length < 3) {
           return of([]);
         }
+
         return this.locationService.searchLocation(value);
       })
-    ).subscribe((res: any) => {
+    )
+    .subscribe((res: any) => {
       this.pickupSuggestions = res || [];
     });
 
+    // Drop Search
     this.dropSubject.pipe(
       debounceTime(300),
-      distinctUntilChanged(),
       switchMap(value => {
-        if (!value || value.trim().length < 3) {
-          this.dropSuggestions = [];
+
+        if (value.trim().length < 3) {
           return of([]);
         }
+
         return this.locationService.searchLocation(value);
       })
-    ).subscribe((res: any) => {
+    )
+    .subscribe((res: any) => {
       this.dropSuggestions = res || [];
     });
   }
 
   onPickupChange(value: string) {
-    if (!value || value.trim().length < 3) {
-      this.pickupSuggestions = [];
-    }
     this.pickupSubject.next(value);
   }
 
   onDropChange(value: string) {
-    if (!value || value.trim().length < 3) {
-      this.dropSuggestions = [];
-    }
     this.dropSubject.next(value);
   }
 
@@ -94,51 +92,27 @@ export class RideRequest {
     this.dropSuggestions = [];
   }
 
-  msgTimeout:any;
+  rideRequest() {
 
-rideRequest() {
+    if (!this.pickup.trim() || !this.drop.trim()) {
+      this.rideService.msg.set('Enter pickup and drop location');
 
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
-  const token = localStorage.getItem('token');
-
-  const isLoggedIn = !!user && !!token;
-
-  if (!this.pickup.trim() || !this.drop.trim()) {
-    this.rideService.setMsg('Please enter pickup and drop location');
-
-    clearTimeout(this.msgTimeout);
-
-    this.msgTimeout = setTimeout(() => {
-      this.rideService.setMsg('');
+    setTimeout(() => {
+      this.rideService.msg.set('');
     }, 3000);
+      return;
+    }
 
-    return;
+    this.rideService.updateRide({
+      pickup: this.pickup,
+      drop: this.drop
+    });
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
   }
-
-
-  this.rideService.updateRide({
-    pickup: this.pickup,
-    drop: this.drop
-  });
-
-
-  if (user?.role === 'driver') {
-    this.route.navigate(['/driver-dashboard']);
-    return;
-  }
-
-  if (!isLoggedIn) {
-    this.route.navigate(['/login']);
-    return;
-  }
-
-  this.route.navigate(['/vehicle']);
-}
-
-
-
-  // bookRide() {
-  //   this.rideService.bookRide(this.rideCheckoutDetails);
-  //   this.route.navigate(['ride-booked']);
-  // }
 }
