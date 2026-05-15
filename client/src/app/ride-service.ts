@@ -14,15 +14,17 @@ export class RideService {
   msg = signal('');
 
   booking = signal<any>({
-    pickup: '',
-    drop: '',
-    distance: 0,
-    duration: 0,
-    fare: 0,
-    gst: 0,
-    total: 0,
-    vehicle: '',
-  });
+  pickup: '',
+  pickUpCoordinates: [],
+  dropCoordinates: [],
+  drop: '',
+  distance: 0,
+  duration: 0,
+  fare: 0,
+  gst: 0,
+  total: 0,
+  vehicle: '',
+});
 
   updateRide(data: any) {
     this.booking.update((old) => ({

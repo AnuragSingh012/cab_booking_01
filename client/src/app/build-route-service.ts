@@ -34,6 +34,8 @@ export class BuildRouteService {
         this.routeService.getRoute(start, end).subscribe((res: any) => {
           const route = res.routes[0];
 
+          const pickUpCoordinates=[start.lat, start.lng];
+          const dropCoordinates=[end.lat, end.lng];
           const distanceKm = (route.distance / 1000).toFixed(2);
           const durationMin = (route.duration / 60).toFixed(0);
 
@@ -48,6 +50,8 @@ export class BuildRouteService {
 }
 
           this.rideService.updateRide({
+            pickUpCoordinates: pickUpCoordinates,
+            dropCoordinates: dropCoordinates,
             distance: distanceKm,
             duration: durationMin,
           });

@@ -58,14 +58,16 @@ export class RideSuccess implements OnInit, OnDestroy {
     if (!ride) return;
 
     const createdTime = new Date(ride.createdAt).getTime();
-    const expiryTime = createdTime + 10 * 60 * 1000;
+    const expiryTime = createdTime + 60 * 1000;
 
     const remaining = expiryTime - Date.now();
 
-    if (remaining <= 0) {
-      this.progress.set(0);
-      this.cancelRide();
-      return;
+    if(ride.status==="requested"){
+      if (remaining <= 0) {
+        this.progress.set(0);
+        this.cancelRide();
+        return;
+      }
     }
 
     const totalDuration = 10 * 60 * 1000;
@@ -79,6 +81,8 @@ export class RideSuccess implements OnInit, OnDestroy {
           ...res.booking,
           driver: res.driver,
         }));
+
+        console.log(this.activeRide());
       },
     });
   }
