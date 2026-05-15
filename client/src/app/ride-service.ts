@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class RideService {
-
   http = inject(HttpClient);
 
   mapLoading = signal(false);
@@ -22,55 +21,44 @@ export class RideService {
     fare: 0,
     gst: 0,
     total: 0,
-    vehicle: ''
+    vehicle: '',
   });
 
   updateRide(data: any) {
-    this.booking.update(old => ({
+    this.booking.update((old) => ({
       ...old,
-      ...data
+      ...data,
     }));
   }
 
+  // POST /api/rides
   bookRide(data: any) {
-    return this.http.post(
-      'http://localhost:7000/book-ride',
-      data
-    );
+    return this.http.post('http://localhost:7000/api/rides', data);
   }
 
+  // PATCH /api/rides/:id
   cancelBooking(id: string, data: any) {
-    return this.http.patch(
-      `http://localhost:7000/booking/${id}`,
-      data
-    );
+    return this.http.patch(`http://localhost:7000/api/rides/${id}`, data);
   }
 
+  // GET /api/rides/:id
   bookingProgress(rideID: string) {
     console.log(rideID);
-
-    return this.http.get(
-      `http://localhost:7000/user/booking/${rideID}`
-    );
+    return this.http.get(`http://localhost:7000/api/rides/${rideID}`);
   }
 
+  // POST /api/reviews
   submitFeedback(data: any) {
-    return this.http.post(
-      'http://localhost:7000/user/feedback',
-      data
-    );
+    return this.http.post('http://localhost:7000/api/reviews', data);
   }
 
+  // GET /api/rides
   getMyBookings() {
-    return this.http.get(
-      'http://localhost:7000/my-bookings'
-    );
+    return this.http.get('http://localhost:7000/api/rides');
   }
 
+  // GET /api/users/profile
   getProfile() {
-    return this.http.get(
-      'http://localhost:7000/profile'
-    );
+    return this.http.get('http://localhost:7000/api/users/profile');
   }
-
 }
