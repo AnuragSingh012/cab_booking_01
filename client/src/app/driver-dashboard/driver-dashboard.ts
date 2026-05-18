@@ -182,8 +182,10 @@ export class DriverDashboard implements OnInit, OnDestroy {
     this.driverService.completeRide(rideId).subscribe({
       next: ()=>{
         const ride = this.activeRide();
-        if(ride?.drop) {
-          this.driverService.addDirverLocation(ride?.drop, []).subscribe({
+        if(ride?.drop && ride?.dropCoordinates
+) {
+          this.driverService.addDirverLocation(ride?.drop, ride?.dropCoordinates
+).subscribe({
             next: res=> {
               console.log("location Updated", res);
             },
