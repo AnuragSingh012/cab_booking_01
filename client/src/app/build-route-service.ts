@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-// import { GeoService } from './geo-service';
 import { RouteService } from './route-service';
 import { MapRenderService } from './map-render-service';
 import { Router } from '@angular/router';
@@ -12,7 +11,6 @@ import { LocationService } from './location-service';
 export class BuildRouteService {
 
   rideService = inject(RideService);
-  // geoService = inject(GeoService);
   routeService = inject(RouteService);
   mapRender = inject(MapRenderService);
   router = inject(Router);
