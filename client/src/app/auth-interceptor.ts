@@ -1,7 +1,8 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-   if (!req.url.includes('localhost:7000')) {
+   if (!req.url.includes(`${environment.baseUrl}`)) {
     return next(req);
   }
 
