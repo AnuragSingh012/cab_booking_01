@@ -74,14 +74,14 @@
         <div class="ride-row">
             <span class="label">FROM</span>
             <span class="value">
-                {{availableRide()?.pickup}}
+                {{availableRide()?.pickup|titlecase}}
             </span>
         </div>
 
         <div class="ride-row">
             <span class="label">TO</span>
             <span class="value">
-                {{availableRide()?.drop}}
+                {{availableRide()?.drop|titlecase}}
             </span>
         </div>
 
@@ -97,7 +97,7 @@
         <div class="ride-row">
             <span class="label">FARE</span>
             <span class="value">
-                ₹ {{availableRide()?.total}}
+                ₹ {{availableRide()?.total|number}}
             </span>
         </div>
 
@@ -194,12 +194,12 @@
 
                 @if(review.feedback){
                 <p class="feedback">
-                    "{{review.feedback}}"
+                    "{{review.feedback|titlecase}}"
                 </p>
                 }
 
                 <p class="route">
-                    {{review.bookingId.pickup}} → {{review.bookingId.drop}}
+                    {{review.bookingId.pickup|titlecase}} → {{review.bookingId.drop|titlecase}}
                 </p>
 
             </div>

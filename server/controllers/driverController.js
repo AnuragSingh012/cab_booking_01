@@ -2,8 +2,6 @@ const Booking = require("../models/booking");
 const Driver = require("../models/driver");
 const User = require("../models/user");
 const Review = require("../models/review");
-
-
 const getDriverDashboard = async (req, res) => {
   try {
     const driver = await Driver.findOne({
