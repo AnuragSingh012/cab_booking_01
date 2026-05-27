@@ -199,7 +199,6 @@ export class RideSuccess implements OnInit, OnDestroy {
       return;
     }
 
-    // stop when almost finished
     if (currentETA <= (1 / 12)) {
 
       this.liveETA.set(0);

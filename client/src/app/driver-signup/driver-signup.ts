@@ -36,7 +36,7 @@ export class DriverSignup {
 
     driverLocation: ['', [Validators.required]],
 
-    licenseNumber: ['',[Validators.required, Validators.pattern(/^[A-Z]{2}[0-9]{2}[0-9]{4}[0-9]{7}$/)]],
+    licenseNumber: ['',[Validators.required, Validators.pattern(/^[A-Z]{2}[0-9]{13}$/)]],
 
     vehicleType: ['', [Validators.required]],
 
@@ -71,7 +71,7 @@ export class DriverSignup {
         })
       )
       .subscribe((res: any) => {
-        this.currentAddressSuggestions = res || [];
+        this.currentAddressSuggestions = res;
       });
   }
 

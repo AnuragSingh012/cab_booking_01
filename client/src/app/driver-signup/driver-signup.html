@@ -1,14 +1,9 @@
 <div class="signup-wrapper">
 
-    <form
-        [formGroup]="signUpForm"
-        (ngSubmit)="signup()"
-        class="signup-form"
-    >
+    <form [formGroup]="signUpForm" (ngSubmit)="signup()" class="signup-form">
 
         <div class="signup-card driver-card">
 
-            <!-- Heading -->
             <div class="signup-header">
 
                 <h1 class="signup-title">
@@ -21,225 +16,186 @@
 
             </div>
 
-            <!-- Grid -->
             <div class="signup-grid">
 
-                <!-- Name -->
                 <div class="form-group">
 
                     <label class="form-label">
                         Full Name
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="name"
-                        type="text"
-                        placeholder="Enter your Name"
-                    >
+                    <input class="form-input" formControlName="name" type="text" placeholder="Enter your Name">
 
                     @if(signUpForm.get('name')?.touched && signUpForm.get('name')?.invalid){
 
-                        <small class="error-text">
+                    <small class="error-text">
 
-                            @if(signUpForm.get('name')?.errors?.['required']){
-                                Name is required
-                            }
+                        @if(signUpForm.get('name')?.errors?.['required']){
+                        Name is required
+                        }
 
-                            @if(signUpForm.get('name')?.errors?.['minlength']){
-                                Minimum 3 characters required
-                            }
+                        @if(signUpForm.get('name')?.errors?.['minlength']){
+                        Minimum 3 characters required
+                        }
 
-                        </small>
+                    </small>
 
                     }
 
                 </div>
 
-                <!-- Email -->
                 <div class="form-group">
 
                     <label class="form-label">
                         Email Address
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="email"
-                        type="email"
-                        placeholder="Enter your email"
-                    >
+                    <input class="form-input" formControlName="email" type="email" placeholder="Enter your email">
 
                     @if(signUpForm.get('email')?.touched && signUpForm.get('email')?.invalid){
 
-                        <small class="error-text">
+                    <small class="error-text">
 
-                            @if(signUpForm.get('email')?.errors?.['required']){
-                                Email is required
-                            }
+                        @if(signUpForm.get('email')?.errors?.['required']){
+                        Email is required
+                        }
 
-                            @if(signUpForm.get('email')?.errors?.['email']){
-                                Enter valid email
-                            }
+                        @if(signUpForm.get('email')?.errors?.['email']){
+                        Enter valid email
+                        }
 
-                        </small>
+                    </small>
 
                     }
 
                 </div>
 
-                <!-- Password -->
                 <div class="form-group">
 
                     <label class="form-label">
                         Password
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="password"
-                        type="password"
-                        placeholder="Enter your password"
-                    >
+                    <input class="form-input" formControlName="password" type="password"
+                        placeholder="Enter your password">
 
                     @if(signUpForm.get('password')?.touched && signUpForm.get('password')?.invalid){
 
-                        <small class="error-text">
+                    <small class="error-text">
 
-                            @if(signUpForm.get('password')?.errors?.['required']){
-                                Password is required
-                            }
+                        @if(signUpForm.get('password')?.errors?.['required']){
+                        Password is required
+                        }
 
-                            @if(signUpForm.get('password')?.errors?.['minlength']){
-                                Minimum 6 characters required
-                            }
+                        @if(signUpForm.get('password')?.errors?.['minlength']){
+                        Minimum 6 characters required
+                        }
 
-                        </small>
+                    </small>
 
                     }
 
                 </div>
 
-                <!-- Confirm Password -->
                 <div class="form-group">
 
                     <label class="form-label">
                         Confirm Password
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="confirmPassword"
-                        type="password"
-                        placeholder="Confirm your password"
-                    >
+                    <input class="form-input" formControlName="confirmPassword" type="password"
+                        placeholder="Confirm your password">
 
                     @if(signUpForm.get('confirmPassword')?.touched && signUpForm.get('confirmPassword')?.invalid){
 
-                        <small class="error-text">
-                            Confirm password is required
-                        </small>
+                    <small class="error-text">
+                        Confirm password is required
+                    </small>
 
                     }
 
                     @if(
-                        signUpForm.get('confirmPassword')?.touched &&
-                        signUpForm.get('password')?.value !== signUpForm.get('confirmPassword')?.value
+                    signUpForm.get('confirmPassword')?.touched &&
+                    signUpForm.get('password')?.value !== signUpForm.get('confirmPassword')?.value
                     ){
 
-                        <small class="error-text">
-                            Passwords do not match
-                        </small>
+                    <small class="error-text">
+                        Passwords do not match
+                    </small>
 
                     }
 
                 </div>
 
-                <!-- License -->
                 <div class="form-group">
 
                     <label class="form-label">
                         License Number
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="licenseNumber"
-                        type="text"
-                        placeholder="Enter your License number"
-                    >
+                    <input class="form-input" formControlName="licenseNumber" type="text"
+                        placeholder="Enter your License number">
 
                     @if(signUpForm.get('licenseNumber')?.touched && signUpForm.get('licenseNumber')?.invalid){
 
-    <small class="error-text">
+                    <small class="error-text">
 
-        @if(signUpForm.get('licenseNumber')?.errors?.['required']){
-            License number is required
-        }
+                        @if(signUpForm.get('licenseNumber')?.errors?.['required']){
+                        License number is required
+                        }
 
-        @if(signUpForm.get('licenseNumber')?.errors?.['pattern']){
-            Enter valid license number
-        }
+                        @if(signUpForm.get('licenseNumber')?.errors?.['pattern']){
+                        Enter valid license number
+                        }
 
-    </small>
+                    </small>
 
-}
+                    }
 
                 </div>
 
-                <!-- Address -->
                 <div class="form-group address-container">
 
                     <label class="form-label">
                         Current Address
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="driverLocation"
-                        type="text"
-                        placeholder="Enter your current address"
-                        autocomplete="off"
-                        (blur)="hideSuggestions()"
-                    >
+                    <input class="form-input" formControlName="driverLocation" type="text"
+                        placeholder="Enter your current address" autocomplete="off" (blur)="hideSuggestions()">
 
                     @if (currentAddressSuggestions.length > 0) {
 
-                        <ul class="suggestions-dropdown">
+                    <ul class="suggestions-dropdown">
 
-                            @for (place of currentAddressSuggestions; track place) {
+                        @for (place of currentAddressSuggestions; track place) {
 
-                                <li (click)="selectAddress(place)">
-                                    {{ place.display_name }}
-                                </li>
+                        <li (click)="selectAddress(place)">
+                            {{ place.display_name }}
+                        </li>
 
-                            }
+                        }
 
-                        </ul>
+                    </ul>
 
                     }
 
                     @if(signUpForm.get('driverLocation')?.touched && signUpForm.get('driverLocation')?.invalid){
 
-                        <small class="error-text">
-                            Address is required
-                        </small>
+                    <small class="error-text">
+                        Address is required
+                    </small>
 
                     }
 
                 </div>
 
-                <!-- Vehicle -->
                 <div class="form-group">
 
                     <label class="form-label">
                         Vehicle Type
                     </label>
 
-                    <select
-                        class="form-input"
-                        formControlName="vehicleType"
-                    >
+                    <select class="form-input" formControlName="vehicleType">
                         <option value="" hidden>
                             Select Vehicle Type
                         </option>
@@ -253,9 +209,9 @@
 
                     @if(signUpForm.get('vehicleType')?.touched && signUpForm.get('vehicleType')?.invalid){
 
-                        <small class="error-text">
-                            Select vehicle type
-                        </small>
+                    <small class="error-text">
+                        Select vehicle type
+                    </small>
 
                     }
 
@@ -268,28 +224,24 @@
                         Vehicle Number
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="vehicleNumber"
-                        type="text"
-                        placeholder="Enter your Vehicle Number"
-                    >
+                    <input class="form-input" formControlName="vehicleNumber" type="text"
+                        placeholder="Enter your Vehicle Number">
 
                     @if(signUpForm.get('vehicleNumber')?.touched && signUpForm.get('vehicleNumber')?.invalid){
 
-    <small class="error-text">
+                    <small class="error-text">
 
-        @if(signUpForm.get('vehicleNumber')?.errors?.['required']){
-            Vehicle number is required
-        }
+                        @if(signUpForm.get('vehicleNumber')?.errors?.['required']){
+                        Vehicle number is required
+                        }
 
-        @if(signUpForm.get('vehicleNumber')?.errors?.['pattern']){
-            Enter valid vehicle number
-        }
+                        @if(signUpForm.get('vehicleNumber')?.errors?.['pattern']){
+                        Enter valid vehicle number
+                        }
 
-    </small>
+                    </small>
 
-}
+                    }
 
                 </div>
 

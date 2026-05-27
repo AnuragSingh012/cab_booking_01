@@ -17,7 +17,6 @@ export class AuthService {
   role = computed(() => this.user()?.role);
 
   constructor() {
-    console.log("check auth status called..")
     this.checkAuthStatus();
   }
 
@@ -43,7 +42,7 @@ export class AuthService {
 
 
   checkAuthStatus() {
-  this.http.get<any>(`${environment.baseUrl}/auth/me`).subscribe({
+  this.http.get<any>(`${environment.baseUrl}/auth/userAuth`).subscribe({
     next: (userData) => {
       this.user.set(userData);
       this.authChecked.set(true);

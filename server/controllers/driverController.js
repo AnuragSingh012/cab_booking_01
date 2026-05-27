@@ -134,12 +134,10 @@ const rejectBooking = async (req, res) => {
       return res.status(404).json({ message: "Driver not found" });
     }
 
-    console.log(`Driver ${driver._id} is rejecting booking ${bookingId}`);
     const updatedBooking = await Booking.findByIdAndUpdate(
       bookingId,
       { 
         $addToSet: { rejectedDrivers: driver._id },
-        $set: { driverId: null } 
       },
       { new: true }
     );

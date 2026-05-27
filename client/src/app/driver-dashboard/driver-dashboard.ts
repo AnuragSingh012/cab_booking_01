@@ -49,7 +49,6 @@ export class DriverDashboard implements OnInit, OnDestroy {
   private sub?: Subscription;
 
   constructor() {
-    // 3. Reactively sync core profile info whenever AuthService resolves the cookie user data
     effect(() => {
       const currentUser = this.authService.user();
       if (currentUser) {
@@ -105,7 +104,6 @@ export class DriverDashboard implements OnInit, OnDestroy {
 
         this.activeRide.set(data?.activeRide ?? null);
 
-        // Update driver specific tracking metrics from dashboard endpoint
         this.driver.update(d => ({
           ...d,
           vehicle: data?.driver?.vehicleType ?? '',
@@ -147,7 +145,7 @@ export class DriverDashboard implements OnInit, OnDestroy {
     if (!rideId) return;
 
     this.driverService.acceptRide(rideId).subscribe({
-      next: () => this.refresh(), // Instant manual refresh on success
+      next: () => this.refresh(),
       error: err => console.log(err),
     });
   }
@@ -193,11 +191,11 @@ export class DriverDashboard implements OnInit, OnDestroy {
 
     this.driverService.rejectRide(rideId).subscribe({
       next: (res) => {
-        console.log('Successfully updated backend array:', res);
+        console.log('Rejected Successfully:', res);
         this.availableRide.set(null);
       },
       error: (err) => {
-        console.error('The backend rejected your patch request:', err);
+        console.error('Error while rejecting', err);
       }
     });
   }

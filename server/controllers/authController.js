@@ -85,8 +85,7 @@ exports.login =  async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: "lax",
-      maxAge: 24*60*60*1000
+      sameSite: "lax"
     })
 
     res.json({ message: "Login successful" });
@@ -97,7 +96,7 @@ exports.login =  async (req, res) => {
   }
 };
 
-exports.getMe = async (req, res) => {
+exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
 
