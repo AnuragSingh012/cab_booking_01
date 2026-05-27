@@ -3,10 +3,11 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { RideService } from '../ride-service';
 import { FormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
+import { debounceTime, of, Subject, switchMap } from 'rxjs';
 import { LocationService } from '../location-service';
 import { DriverService } from '../driver-service';
 import { AuthService } from '../auth-service';
+import { PopupService } from '../popup-service';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,7 @@ import { AuthService } from '../auth-service';
 })
 export class Profile {
   user = signal<any>(null);
-  
+
 
   rideDetails = signal({
     totalRides: 0,
@@ -26,11 +27,11 @@ export class Profile {
   });
 
   rideService = inject(RideService);
-  authService=inject(AuthService);
+  authService = inject(AuthService);
   router = inject(Router);
+  notify=inject(PopupService);
 
-  //----------------By Aditya--------------------------
-  
+
   pickup: string = '';
   pickupSuggestions: any[] = [];
   pickupSubject = new Subject<string>();
@@ -57,7 +58,6 @@ export class Profile {
 
     this.pickupSubject.pipe(
       debounceTime(300),
-      distinctUntilChanged(),
       switchMap(value => {
         if (!value || value.trim().length < 3) {
           this.pickupSuggestions = [];
@@ -70,8 +70,6 @@ export class Profile {
     });
   }
 
-
-  //----------------By Aditya--------------------------
   onPickupChange(value: string) {
     if (!value || value.trim().length < 3) {
       this.pickupSuggestions = [];
@@ -80,16 +78,16 @@ export class Profile {
   }
 
 
-  driverCoordinates: Number[]= [];
+  driverCoordinates: Number[] = [];
 
   async selectPickup(place: any) {
 
-    this.driverCoordinates.push(place.lat,place.lon);
+    this.driverCoordinates.push(place.lat, place.lon);
     this.pickup = place.display_name;
     this.pickupSuggestions = [];
   }
 
-  
+
 
   editLocation = false;
 
@@ -99,7 +97,7 @@ export class Profile {
 
     if (this.pickup) {
       this.driverService.addDirverLocation(this.pickup, this.driverCoordinates).subscribe((res: any) => {
-        
+
 
         const currentData = this.rideDetails();
         currentData.driverLocation = res.driverLocation;
@@ -115,7 +113,7 @@ export class Profile {
   editP = false;
   editName = ''
   editEmail = ''
-  updatedData :any
+  updatedData: any
 
   startEditing() {
     this.editP = true;
@@ -123,16 +121,14 @@ export class Profile {
     this.editEmail = this.user()?.email || '';
   }
 
-  editProfile(){
-if (!this.editName.trim() || !this.editEmail.trim()) {
-      alert("Name and Email cannot be empty.");
+  editProfile() {
+    if (!this.editName.trim() || !this.editEmail.trim()) {
+      this.notify.show("Name and Email cannot be empty.");
       return;
     }
 
     this.driverService.editProfile(this.editName, this.editEmail).subscribe({
       next: (res: any) => {
-        console.log("Name is ", res.user.name);
-        console.log("Email is ", res.user.email);
 
         const updatedData = {
           ...this.user(),
@@ -141,17 +137,14 @@ if (!this.editName.trim() || !this.editEmail.trim()) {
         };
 
         this.user.set(updatedData);
-        localStorage.setItem('user', JSON.stringify(updatedData));
-
         this.editP = false;
       },
 
       error: (err) => {
-   
-        alert(err.error?.message || "An error occurred while updating profile.");
+        this.notify.show(err.error?.message || "An error occurred while updating profile.");
       }
     });
-    
+
   }
 
 

@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 
 import { DriverService } from '../driver-service';
-import { AuthService } from '../auth-service'; // 1. Import your updated AuthService
+import { AuthService } from '../auth-service';
 
 @Component({
   selector: 'app-driver-dashboard',
@@ -22,13 +22,13 @@ import { AuthService } from '../auth-service'; // 1. Import your updated AuthSer
 })
 export class DriverDashboard implements OnInit, OnDestroy {
   private driverService = inject(DriverService);
-  private authService = inject(AuthService); // 2. Inject AuthService
+  private authService = inject(AuthService);
 
   reviews = signal<any[]>([]);
   activeRide = signal<any | null>(null);
   availableRide = signal<any | null>(null);
   driverToggleStatus = false;
-  
+
   driver = signal({
     id: '',
     name: '',
@@ -84,21 +84,17 @@ export class DriverDashboard implements OnInit, OnDestroy {
   refresh() {
     this.driverService.getDriverDashboard().subscribe({
       next: (data: any) => {
-        console.log(data);
         this.reviews.set(data?.reviews ?? []);
 
         this.driverToggleStatus = data?.driver?.isAvailable ?? false;
         const availableRide = data?.availableRide ?? null;
 
-        if (
-          this.driverToggleStatus &&
-          availableRide &&
-          this.driver().vehicle &&
-          availableRide.vehicle &&
-          this.driver().vehicle.toLowerCase() === availableRide.vehicle.toLowerCase()
+        if (this.driverToggleStatus && availableRide?.vehicle &&
+          this.driver()?.vehicle.toLowerCase() === availableRide?.vehicle.toLowerCase()
         ) {
           this.availableRide.set(availableRide);
-        } else {
+        } 
+        else {
           this.availableRide.set(null);
         }
 

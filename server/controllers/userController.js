@@ -19,7 +19,6 @@ const getProfile = async (req, res) => {
       bookingData = await Booking.find({ driverId: id });
       driverData = await Driver.findOne({ userId: id });
       driverLocation = driverData.driverLocation;
-      console.log("data=  ", driverData);
     }
 
     const totalRides = bookingData.length;

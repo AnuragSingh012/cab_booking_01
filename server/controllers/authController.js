@@ -32,7 +32,7 @@ exports.signUp = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: role || "rider"
+      role
     });
 
     if (role === "driver") {

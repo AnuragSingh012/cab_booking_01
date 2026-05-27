@@ -9,7 +9,6 @@ export class RouteService {
   private http = inject(HttpClient);
 
   getRoute(start: any, end: any) {
-    console.log("Route API hit");
     const url =
       `https://router.project-osrm.org/route/v1/driving/` +
       `${start.lng},${start.lat};${end.lng},${end.lat}` +

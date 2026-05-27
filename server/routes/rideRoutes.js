@@ -3,16 +3,16 @@ const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 const {
   bookRide,
-  getMyBookings,
   getBookingById,
   updateBooking,
+  getMyTrips,
 } = require("../controllers/rideController");
 
 
 router.post("/", authMiddleware, bookRide);
 
 
-router.get("/", authMiddleware, getMyBookings);
+router.get("/", authMiddleware, getMyTrips);
 
 
 router.get("/:id", getBookingById);

@@ -69,7 +69,6 @@ export class DriverService {
       email:email
     }
 
-    console.log("Edit profile data ", editUser);
     
     return this.http.patch(
       `${environment.baseUrl}/api/users/editProfile`,

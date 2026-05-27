@@ -22,7 +22,7 @@ const bookRide = async (req, res) => {
 };
 
 
-const getMyBookings = async (req, res) => {
+const getMyTrips = async (req, res) => {
   try {
     const bookings = await Booking.find({
       riderId: req.user.id,
@@ -33,52 +33,6 @@ const getMyBookings = async (req, res) => {
     console.log(err);
     res.status(500).json({
       message: "Failed to fetch bookings",
-    });
-  }
-};
-
-
-const getBookingById = async (req, res) => {
-  try {
-    const booking = await Booking.findById(req.params.id);
-
-    if (!booking) {
-      return res.status(404).json({
-        message: "Booking not found",
-      });
-    }
-
-    let driver = null;
-
-    if (booking.driverId) {
-      const driverDetails = await Driver.findOne({
-        userId: booking.driverId,
-      });
-
-      const userDetails = await User.findById(
-        booking.driverId
-      ).select("-password");
-
-      driver = {
-        id: userDetails._id,
-        name: userDetails.name,
-        email: userDetails.email,
-        vehicle: driverDetails.vehicleType,
-        vehicleNo: driverDetails.vehicleNumber,
-        license: driverDetails.licenseNumber,
-        available: driverDetails.isAvailable,
-        driverCoordinates: driverDetails.driverCoordinates
-      };
-    }
-
-    res.json({
-      booking,
-      driver,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      message: "Error",
     });
   }
 };
@@ -113,9 +67,55 @@ const updateBooking = async (req, res) => {
   }
 };
 
+
+const getBookingById = async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({
+        message: "Booking not found",
+      });
+    }
+
+    let driver = null;
+
+    if (booking.driverId) {
+      const driverDetails = await Driver.findOne({
+        userId: booking.driverId,
+      });
+
+      const userDetails = await User.findById(
+        booking.driverId
+      ).select("-password");
+
+      driver = {
+        name: userDetails.name,
+        email: userDetails.email,
+        vehicle: driverDetails.vehicleType,
+        vehicleNo: driverDetails.vehicleNumber,
+        license: driverDetails.licenseNumber,
+        driverCoordinates: driverDetails.driverCoordinates
+      };
+    }
+
+    res.json({
+      booking,
+      driver,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Error",
+    });
+  }
+};
+
+
+
 module.exports = {
   bookRide,
-  getMyBookings,
+  getMyTrips,
   getBookingById,
   updateBooking,
 };

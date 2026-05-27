@@ -42,7 +42,6 @@ export class RideRequest {
   constructor() {
     effect(() => {
       const user = this.authService.user();
-      console.log("Reactive User State updated:", user);
 
       if (user && user.role === 'driver') {
         this.router.navigate(['/driver-dashboard']);
