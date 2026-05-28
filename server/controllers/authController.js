@@ -2,7 +2,7 @@ const User = require("../models/user");
 const Driver = require("../models/driver");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const dotenv=require('dotenv').config();
+const dotenv = require('dotenv').config();
 
 exports.signUp = async (req, res) => {
   try {
@@ -58,7 +58,7 @@ exports.signUp = async (req, res) => {
   }
 };
 
-exports.login =  async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -100,7 +100,7 @@ exports.getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -113,7 +113,7 @@ exports.getUser = async (req, res) => {
 
 
 exports.logout = async (req, res) => {
-  try{
+  try {
     res.clearCookie("token");
     res.json({ message: "Logged out successful" })
   } catch (err) {

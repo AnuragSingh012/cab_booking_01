@@ -16,19 +16,21 @@ import { UserSignup } from './user-signup/user-signup';
 import { DriverSignup } from './driver-signup/driver-signup';
 
 export const routes: Routes = [
-  { path: "", component: Home, children:[
-    {path:"", component: RideRequest},
-    {path: "vehicle", component: VehicleSelection, canActivate: [authGuard], data: {roles: ['rider']}},
-    {path: "checkout", component: Checkout, canActivate: [authGuard], data: {roles: ['rider']}}
-  ] },
+  {
+    path: "", component: Home, children: [
+      { path: "", component: RideRequest },
+      { path: "vehicle", component: VehicleSelection, canActivate: [authGuard], data: { roles: ['rider'] } },
+      { path: "checkout", component: Checkout, canActivate: [authGuard], data: { roles: ['rider'] } }
+    ]
+  },
   { path: "login", component: Login },
   { path: "sign-up", component: UserSignup },
-{ path: "driver-signup", component: DriverSignup },
-  {path: "profile", component: Profile, canActivate:[authGuard], data:{roles:['rider', 'driver']}},
-  {path: "about", component:About},
-  {path: "my-trips", component: MyTrips, canActivate: [authGuard], data: {roles: ['rider']}},
-  {path: "driver-dashboard", component: DriverDashboard, canActivate: [authGuard], data: {roles: ['driver']}},
+  { path: "driver-signup", component: DriverSignup },
+  { path: "profile", component: Profile, canActivate: [authGuard], data: { roles: ['rider', 'driver'] } },
+  { path: "about", component: About },
+  { path: "my-trips", component: MyTrips, canActivate: [authGuard], data: { roles: ['rider'] } },
+  { path: "driver-dashboard", component: DriverDashboard, canActivate: [authGuard], data: { roles: ['driver'] } },
   { path: "map", component: Map },
-  { path: "ride-booked/:id", component:RideSuccess },
+  { path: "ride-booked/:id", component: RideSuccess },
   { path: "**", component: NotFound }
 ];

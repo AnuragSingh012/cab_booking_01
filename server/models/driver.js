@@ -25,15 +25,15 @@ const driverSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  driverLocation:{
-    type:String,
-    required:false
+  driverLocation: {
+    type: String,
+    required: false
   },
-driverCoordinates: {
-  type: [Number],
-  required: false
-}
-    
+  driverCoordinates: {
+    type: [Number],
+    required: false
+  }
+
 }, {
   timestamps: true
 });

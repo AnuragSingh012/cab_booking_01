@@ -107,12 +107,12 @@ const updateDriverLocation = async (req, res) => {
     const user = await User.findById(req.user.id);
     const userId = user._id;
 
-    const {place, driverCoordinates} = req.body.data;
+    const { place, driverCoordinates } = req.body.data;
 
     if (place) {
       const updateLocation = await Driver.findOneAndUpdate(
         { userId: userId },
-        { $set: { driverLocation: place , driverCoordinates:driverCoordinates} },
+        { $set: { driverLocation: place, driverCoordinates: driverCoordinates } },
         { returnDocument: "after" }
       );
 
@@ -138,7 +138,7 @@ const rejectBooking = async (req, res) => {
 
     const updatedBooking = await Booking.findByIdAndUpdate(
       bookingId,
-      { 
+      {
         $addToSet: { rejectedDrivers: driver._id },
       },
       { new: true }
@@ -148,9 +148,9 @@ const rejectBooking = async (req, res) => {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    return res.status(200).json({ 
-      success: true, 
-      message: "Ride rejected successfully." 
+    return res.status(200).json({
+      success: true,
+      message: "Ride rejected successfully."
     });
 
   } catch (error) {

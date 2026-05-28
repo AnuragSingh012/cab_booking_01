@@ -11,9 +11,7 @@ const {
 
 router.post("/", authMiddleware, bookRide);
 
-
 router.get("/", authMiddleware, getMyTrips);
-
 
 router.get("/:id", getBookingById);
 

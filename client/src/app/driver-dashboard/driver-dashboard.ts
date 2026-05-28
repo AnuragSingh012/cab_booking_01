@@ -94,7 +94,7 @@ export class DriverDashboard implements OnInit, OnDestroy {
           this.driver()?.vehicle.toLowerCase() === availableRide?.vehicle.toLowerCase()
         ) {
           this.availableRide.set(availableRide);
-        } 
+        }
         else {
           this.availableRide.set(null);
         }

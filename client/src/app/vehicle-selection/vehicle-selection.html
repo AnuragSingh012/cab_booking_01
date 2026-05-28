@@ -15,25 +15,16 @@
   <div class="vehicle-wrapper">
 
     @if(loading()) {
-      <div class="vehicle-loader">
-        <div class="spinner"></div>
-        <p>Finding available rides...</p>
-      </div>
+    <div class="vehicle-loader">
+      <div class="spinner"></div>
+      <p>Finding available rides...</p>
+    </div>
     }
 
-    <div
-      class="form-container"
-      [style.opacity]="loading() ? 0.4 : 1"
-    >
+    <div class="form-container" [style.opacity]="loading() ? 0.4 : 1">
 
       <label class="vcard" [class.active]="selectedValue === 'Mini'">
-        <input
-          type="radio"
-          name="vehicle"
-          value="Mini"
-          [(ngModel)]="selectedValue"
-          [disabled]="loading()"
-        />
+        <input type="radio" name="vehicle" value="Mini" [(ngModel)]="selectedValue" [disabled]="loading()" />
 
         <div class="vcard-content">
           <div class="left">
@@ -51,13 +42,7 @@
       </label>
 
       <label class="vcard" [class.active]="selectedValue === 'Sedan'">
-        <input
-          type="radio"
-          name="vehicle"
-          value="Sedan"
-          [(ngModel)]="selectedValue"
-          [disabled]="loading()"
-        />
+        <input type="radio" name="vehicle" value="Sedan" [(ngModel)]="selectedValue" [disabled]="loading()" />
 
         <div class="vcard-content">
           <div class="left">
@@ -75,13 +60,7 @@
       </label>
 
       <label class="vcard" [class.active]="selectedValue === 'SUV'">
-        <input
-          type="radio"
-          name="vehicle"
-          value="SUV"
-          [(ngModel)]="selectedValue"
-          [disabled]="loading()"
-        />
+        <input type="radio" name="vehicle" value="SUV" [(ngModel)]="selectedValue" [disabled]="loading()" />
 
         <div class="vcard-content">
           <div class="left">
@@ -99,13 +78,7 @@
       </label>
 
       <label class="vcard" [class.active]="selectedValue === 'Premium'">
-        <input
-          type="radio"
-          name="vehicle"
-          value="Premium"
-          [(ngModel)]="selectedValue"
-          [disabled]="loading()"
-        />
+        <input type="radio" name="vehicle" value="Premium" [(ngModel)]="selectedValue" [disabled]="loading()" />
 
         <div class="vcard-content">
           <div class="left">
@@ -122,11 +95,7 @@
         </div>
       </label>
 
-      <button
-        (click)="checkoutDetails()"
-        class="checkout-btn"
-        [disabled]="loading()"
-      >
+      <button (click)="checkoutDetails()" class="checkout-btn" [disabled]="loading()">
         {{ loading() ? 'Calculating...' : 'Go to Checkout' }}
       </button>
 

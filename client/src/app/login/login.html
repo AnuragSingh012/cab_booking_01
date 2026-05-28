@@ -23,38 +23,30 @@
                     Email Address
                 </label>
 
-                <input
-                    class="form-input"
-                    name="email"
-                    #email="ngModel"
-                    email
-                    required
-                    ngModel
-                    type="text"
-                    placeholder="Enter your email"
-                >
+                <input class="form-input" name="email" #email="ngModel" email required ngModel type="text"
+                    placeholder="Enter your email">
 
                 @if (email.invalid && (email.touched || loginForm.submitted)) {
 
-                    <div class="error-text">
+                <div class="error-text">
 
-                        @if (email.errors?.['required']) {
+                    @if (email.errors?.['required']) {
 
-                            <div>
-                                Email is required
-                            </div>
-
-                        }
-
-                        @if (email.errors?.['email']) {
-
-                            <div>
-                                Enter a valid email
-                            </div>
-
-                        }
-
+                    <div>
+                        Email is required
                     </div>
+
+                    }
+
+                    @if (email.errors?.['email']) {
+
+                    <div>
+                        Enter a valid email
+                    </div>
+
+                    }
+
+                </div>
 
                 }
 
@@ -66,48 +58,37 @@
                     Password
                 </label>
 
-                <input
-                    class="form-input"
-                    name="password"
-                    #password="ngModel"
-                    required
-                    ngModel
-                    minlength="6"
-                    type="password"
-                    placeholder="Enter your password"
-                >
+                <input class="form-input" name="password" #password="ngModel" required ngModel minlength="6"
+                    type="password" placeholder="Enter your password">
 
                 @if (password.invalid && (password.touched || loginForm.submitted)) {
 
-                    <div class="error-text">
+                <div class="error-text">
 
-                        @if (password.errors?.['required']) {
+                    @if (password.errors?.['required']) {
 
-                            <div>
-                                Password is required
-                            </div>
-
-                        }
-
-                        @if (password.errors?.['minlength']) {
-
-                            <div>
-                                Password must be at least 6 characters
-                            </div>
-
-                        }
-
+                    <div>
+                        Password is required
                     </div>
+
+                    }
+
+                    @if (password.errors?.['minlength']) {
+
+                    <div>
+                        Password must be at least 6 characters
+                    </div>
+
+                    }
+
+                </div>
 
                 }
 
             </div>
 
 
-            <button
-                type="submit"
-                class="login-btn"
-            >
+            <button type="submit" class="login-btn">
                 Login
             </button>
 
@@ -115,10 +96,7 @@
 
                 Don’t have an account?
 
-                <a
-                    routerLink="/sign-up"
-                    class="signup-link"
-                >
+                <a routerLink="/sign-up" class="signup-link">
                     Sign Up
                 </a>
 

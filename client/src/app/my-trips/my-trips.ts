@@ -15,7 +15,7 @@ export class MyTrips {
 
   ngOnInit() {
 
-    this.rideService.getMyBookings().subscribe({
+    this.rideService.getMyTrips().subscribe({
       next: (res: any) => {
         this.userRides.set(res);
         this.loading.set(false);

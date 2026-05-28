@@ -2,17 +2,41 @@ const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema(
   {
-    pickup: String,
-    drop: String,
+    pickup: {
+      type: String,
+      required: true,
+    },
+    drop: {
+      type: String,
+      required: true,
+    },
 
-    distance: Number,
-    duration: Number,
+    distance: {
+      type: Number,
+      required: true,
+    },
+    duration: {
+      type: Number,
+      required: true,
+    },
 
-    fare: Number,
-    gst: Number,
-    total: Number,
+    fare: {
+      type: Number,
+      required: true,
+    },
+    gst: {
+      type: Number,
+      required: true
+    },
+    total: {
+      type: Number,
+      required: true,
+    },
 
-    vehicle: String,
+    vehicle: {
+      type: String,
+      required: true,
+    },
 
     pickUpCoordinates: {
       type: [Number],

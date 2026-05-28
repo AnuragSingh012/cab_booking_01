@@ -12,7 +12,7 @@ import { PopupService } from '../popup-service';
 })
 export class Navbar {
 
-  notify=inject(PopupService);
+  notify = inject(PopupService);
 
   auth = inject(AuthService);
 

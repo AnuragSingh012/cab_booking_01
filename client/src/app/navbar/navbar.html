@@ -12,9 +12,9 @@
 
         @if (!auth.isLoggedIn()) {
 
-          <a routerLink="driver-signup">
-            Earn
-          </a>
+        <a routerLink="driver-signup">
+          Earn
+        </a>
 
         }
 
@@ -30,73 +30,55 @@
 
       @if (!auth.isLoggedIn()) {
 
-        <div class="auth-links">
+      <div class="auth-links">
 
-          <a routerLink="login">
-            Log in
-          </a>
+        <a routerLink="login">
+          Log in
+        </a>
 
-          <a
-            routerLink="sign-up"
-            class="signup-btn"
-          >
-            Sign up
-          </a>
+        <a routerLink="sign-up" class="signup-btn">
+          Sign up
+        </a>
 
-        </div>
+      </div>
 
       } @else {
 
-        <div
-          (click)="toggleMenu()"
-          class="profile-btn"
-        >
+      <div (click)="toggleMenu()" class="profile-btn">
 
-          <div class="avatar">
-            {{ firstLetter }}
-          </div>
-
-          <span class="username">
-            {{ auth.user()?.name }}
-          </span>
-
+        <div class="avatar">
+          {{ firstLetter }}
         </div>
 
-        @if (showMenu) {
+        <span class="username">
+          {{ auth.user()?.name }}
+        </span>
 
-          <div class="dropdown">
+      </div>
 
-            <div
-              id="tMenu"
-              (click)="toggleMenu()"
-              routerLink="profile"
-            >
-              Account Settings
-            </div>
+      @if (showMenu) {
 
-            @if(auth.user()?.role === 'rider'){
+      <div class="dropdown">
 
-              <div
-                id="tMenu"
-                (click)="toggleMenu()"
-                routerLink="my-trips"
-              >
-                My Trips
-              </div>
+        <div id="tMenu" (click)="toggleMenu()" routerLink="profile">
+          Account Settings
+        </div>
 
-            }
+        @if(auth.user()?.role === 'rider'){
 
-            <div
-              id="tMenu"
-              (click)="logout()"
-              class="logout"
-            >
-              Logout
-            </div>
-
-          </div>
+        <div id="tMenu" (click)="toggleMenu()" routerLink="my-trips">
+          My Trips
+        </div>
 
         }
+
+        <div id="tMenu" (click)="logout()" class="logout">
+          Logout
+        </div>
+
+      </div>
+
+      }
 
       }
 

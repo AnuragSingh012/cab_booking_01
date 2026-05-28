@@ -16,13 +16,13 @@ export class DriverService {
   }
 
   toggleDriverStatus(status: boolean) {
-  return this.http.patch(
-    `${environment.baseUrl}/api/driver/status`,
-    {
-      isAvailable: status,
-    }
-  );
-}
+    return this.http.patch(
+      `${environment.baseUrl}/api/driver/status`,
+      {
+        isAvailable: status,
+      }
+    );
+  }
 
   acceptRide(bookingId: string) {
     return this.http.patch(
@@ -48,8 +48,8 @@ export class DriverService {
     );
   }
 
-  addDirverLocation(place: string,driverCoordinates:Number[] ) {
-    let data={
+  addDirverLocation(place: string, driverCoordinates: Number[]) {
+    let data = {
       place: place,
       driverCoordinates: driverCoordinates
     }
@@ -62,14 +62,14 @@ export class DriverService {
   }
 
 
-  editProfile(name:string, email:string){
+  editProfile(name: string, email: string) {
 
     let editUser = {
-      name:name,
-      email:email
+      name: name,
+      email: email
     }
 
-    
+
     return this.http.patch(
       `${environment.baseUrl}/api/users/editProfile`,
       {
@@ -78,10 +78,10 @@ export class DriverService {
     )
   }
   rejectRide(bookingId: string) {
-  return this.http.patch(
-    `${environment.baseUrl}/api/driver/reject`,
-    { bookingId }
-  );
-}
+    return this.http.patch(
+      `${environment.baseUrl}/api/driver/reject`,
+      { bookingId }
+    );
+  }
 
 }

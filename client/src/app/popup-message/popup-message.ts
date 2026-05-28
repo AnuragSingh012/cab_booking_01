@@ -10,6 +10,6 @@ import { PopupService } from '../popup-service';
 export class PopupMessage {
 
   private popupService = inject(PopupService);
-  
+
   message = this.popupService.message;
 }

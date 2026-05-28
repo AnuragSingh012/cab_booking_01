@@ -16,19 +16,19 @@
 
     <div class="edit-profile">
       @if(editP){
-        <input type="text" class="form-input" [(ngModel)]="editName" placeholder="Enter Name">
-        <input type="email" class="form-input" [(ngModel)]="editEmail" placeholder="Enter Email">
+      <input type="text" class="form-input" [(ngModel)]="editName" placeholder="Enter Name">
+      <input type="email" class="form-input" [(ngModel)]="editEmail" placeholder="Enter Email">
       }
     </div>
 
     <div style="margin-left: auto; padding-right: 40px;">
       @if(!editP){
-        
-        <button class="edit-btn" (click)="startEditing()">Edit Profile</button>
+
+      <button class="edit-btn" (click)="startEditing()">Edit Profile</button>
       }@else{
-        <button class="edit-btn" (click)="editProfile()">Update Profile</button>
-        <button class="edit-btn" style="margin-left: 10px;" (click)="editP = false">Cancel</button>
-        
+      <button class="edit-btn" (click)="editProfile()">Update Profile</button>
+      <button class="edit-btn" style="margin-left: 10px;" (click)="editP = false">Cancel</button>
+
       }
     </div>
   </div>

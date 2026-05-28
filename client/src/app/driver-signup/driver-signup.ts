@@ -36,11 +36,11 @@ export class DriverSignup {
 
     driverLocation: ['', [Validators.required]],
 
-    licenseNumber: ['',[Validators.required, Validators.pattern(/^[A-Z]{2}[0-9]{13}$/)]],
+    licenseNumber: ['', [Validators.required, Validators.pattern(/^[A-Z]{2}[0-9]{13}$/)]],
 
     vehicleType: ['', [Validators.required]],
 
-     vehicleNumber: ['',[Validators.required, Validators.pattern(/^[A-Z]{2}[0-9]{1,2}[A-Z]{1,2}[0-9]{4}$/)]],
+    vehicleNumber: ['', [Validators.required, Validators.pattern(/^[A-Z]{2}[0-9]{1,2}[A-Z]{1,2}[0-9]{4}$/)]],
   });
 
   currentAddressSuggestions: any[] = [];
@@ -75,26 +75,26 @@ export class DriverSignup {
       });
   }
 
-  
+
   selectAddress(place: any) {
 
-  this.signUpForm.patchValue(
-    {
-      driverLocation: place.display_name,
-    },
-    {
-      emitEvent: false,
-    }
-  );
+    this.signUpForm.patchValue(
+      {
+        driverLocation: place.display_name,
+      },
+      {
+        emitEvent: false,
+      }
+    );
 
-  this.driverCoordinates = [
-    +place.lat,
-    +place.lon,
-  ];
+    this.driverCoordinates = [
+      +place.lat,
+      +place.lon,
+    ];
 
 
-  this.currentAddressSuggestions = [];
-}
+    this.currentAddressSuggestions = [];
+  }
 
 
   signup() {

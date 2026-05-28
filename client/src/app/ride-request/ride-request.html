@@ -8,18 +8,11 @@
     <div class="form-container">
 
         <div class="input-wrapper">
-            <input
-                [(ngModel)]="pickup"
-                (input)="onPickupChange(pickup)"
-                class="input"
-                type="text"
+            <input [(ngModel)]="pickup" (input)="onPickupChange(pickup)" class="input" type="text"
                 placeholder="Pickup location">
 
             <div *ngIf="pickupSuggestions.length" class="dropdown">
-                <div
-                    *ngFor="let place of pickupSuggestions"
-                    (click)="selectPickup(place)"
-                    class="dropdown-item">
+                <div *ngFor="let place of pickupSuggestions" (click)="selectPickup(place)" class="dropdown-item">
                     {{ place.display_name }}
                 </div>
             </div>
@@ -27,18 +20,11 @@
 
 
         <div class="input-wrapper">
-            <input
-                [(ngModel)]="drop"
-                (input)="onDropChange(drop)"
-                class="input"
-                type="text"
+            <input [(ngModel)]="drop" (input)="onDropChange(drop)" class="input" type="text"
                 placeholder="Dropoff location">
 
             <div *ngIf="dropSuggestions.length" class="dropdown">
-                <div
-                    *ngFor="let place of dropSuggestions"
-                    (click)="selectDrop(place)"
-                    class="dropdown-item">
+                <div *ngFor="let place of dropSuggestions" (click)="selectDrop(place)" class="dropdown-item">
                     {{ place.display_name }}
                 </div>
             </div>
@@ -46,18 +32,18 @@
 
         <button (click)="rideRequest()" class="search-btn">
             @if(rideService.mapLoading() === true) {
-                Searching....
+            Searching....
             }@else{
-                Search
+            Search
             }
         </button>
 
-        
+
         @if(message()) {
-            <div class="message error">
-                <span class="icon">⚠</span>
-                <span>{{ message() }}</span>
-            </div>
+        <div class="message error">
+            <span class="icon">⚠</span>
+            <span>{{ message() }}</span>
+        </div>
         }
     </div>
 </div>

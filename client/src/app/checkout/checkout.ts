@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Checkout {
 
-   rideService = inject(RideService);
+  rideService = inject(RideService);
   router = inject(Router);
 
   ride = this.rideService.booking;
@@ -34,17 +34,17 @@ export class Checkout {
   }
 
 
-bookRide() {
-  this.rideService.bookRide(this.ride()).subscribe({
-    next: (res: any) => {
+  bookRide() {
+    this.rideService.bookRide(this.ride()).subscribe({
+      next: (res: any) => {
 
-      this.router.navigate([
-        '/ride-booked',
-        res.booking._id
-      ]);
+        this.router.navigate([
+          '/ride-booked',
+          res.booking._id
+        ]);
 
-    },
-    error: err => console.log(err)
-  });
-}
+      },
+      error: err => console.log(err)
+    });
+  }
 }

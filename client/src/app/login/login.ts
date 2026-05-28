@@ -13,17 +13,17 @@ import { PopupService } from '../popup-service';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login{
+export class Login {
 
   notify = inject(PopupService);
   router = inject(Router);
   authService = inject(AuthService);
   rideService = inject(RideService);
-  
+
   ride = this.rideService.booking;
   loading = false;
 
-   constructor() {
+  constructor() {
     effect(() => {
       if (this.authService.isLoggedIn()) {
         this.router.navigate(['/']);
@@ -35,7 +35,7 @@ export class Login{
 
     if (loginForm.invalid) return;
     this.loading = true;
-    
+
     const { email, password } = loginForm.value;
 
     this.authService.login({ email, password }).subscribe({

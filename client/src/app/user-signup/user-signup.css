@@ -135,7 +135,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .suggestions-dropdown li {
@@ -149,4 +149,3 @@
     background-color: #f8f9fa;
     color: #007bff;
 }
-

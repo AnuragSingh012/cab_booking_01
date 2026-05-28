@@ -11,32 +11,30 @@
             <p class="name">{{driver().name}}</p>
             <p class="email">{{driver().email}}</p>
             <p class="meta">
-    {{driver().vehicle}} •
-    {{driver().vehicleNo}} •
-    ⭐ {{ reviews().length ? (getAverageRating() | number) : 'New' }}
-</p>
+                {{driver().vehicle}} •
+                {{driver().vehicleNo}} •
+                ⭐ {{ reviews().length ? (getAverageRating() | number) : 'New' }}
+            </p>
         </div>
     </div>
 
     <div class="status-card">
-  <div>
-    <span class="label">STATUS</span>
+        <div>
+            <span class="label">STATUS</span>
 
-    @if(driver().isAvailable === null) {
-        ...
-    }@else {
-        <p [ngClass]="driverToggleStatus ? 'green' : 'red'">
-          ● {{ driverToggleStatus ? 'Online' : 'Offline' }}
-        </p>
-    }
-  </div>
+            @if(driver().isAvailable === null) {
+            ...
+            }@else {
+            <p [ngClass]="driverToggleStatus ? 'green' : 'red'">
+                ● {{ driverToggleStatus ? 'Online' : 'Offline' }}
+            </p>
+            }
+        </div>
 
-  <button
-    class="toggle-btn"
-    (click)="toggleStatus()">
-    Go {{ driverToggleStatus ? 'Offline' : 'Online' }}
-  </button>
-</div>
+        <button class="toggle-btn" (click)="toggleStatus()">
+            Go {{ driverToggleStatus ? 'Offline' : 'Online' }}
+        </button>
+    </div>
 
     <div class="stats-grid">
         <div class="stat-card">
@@ -98,15 +96,11 @@
         </div>
 
         <div class="actions">
-            <button
-                class="accept-btn"
-                (click)="acceptRide()">
+            <button class="accept-btn" (click)="acceptRide()">
                 Accept
             </button>
 
-            <button
-                class="reject-btn"
-                (click)="rejectRide()">
+            <button class="reject-btn" (click)="rejectRide()">
                 Reject
             </button>
         </div>
@@ -145,17 +139,13 @@
         </div>
 
         @if(activeRide()?.status === 'accepted'){
-        <button
-            class="accept-btn full-btn"
-            (click)="startRide()">
+        <button class="accept-btn full-btn" (click)="startRide()">
             Start Ride
         </button>
         }
 
         @if(activeRide()?.status === 'started'){
-        <button
-            class="accept-btn full-btn"
-            (click)="completeRide()">
+        <button class="accept-btn full-btn" (click)="completeRide()">
             Complete Ride
         </button>
         }

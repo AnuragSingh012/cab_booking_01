@@ -1,10 +1,6 @@
 <div class="signup-wrapper">
 
-    <form
-        [formGroup]="signUpForm"
-        (ngSubmit)="signup()"
-        class="signup-form"
-    >
+    <form [formGroup]="signUpForm" (ngSubmit)="signup()" class="signup-form">
 
         <div class="signup-card">
 
@@ -29,26 +25,21 @@
                         Full Name
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="name"
-                        type="text"
-                        placeholder="Enter your Name"
-                    >
+                    <input class="form-input" formControlName="name" type="text" placeholder="Enter your Name">
 
                     @if(signUpForm.get('name')?.touched && signUpForm.get('name')?.invalid){
 
-                        <small class="error-text">
+                    <small class="error-text">
 
-                            @if(signUpForm.get('name')?.errors?.['required']){
-                                Name is required
-                            }
+                        @if(signUpForm.get('name')?.errors?.['required']){
+                        Name is required
+                        }
 
-                            @if(signUpForm.get('name')?.errors?.['minlength']){
-                                Minimum 3 characters required
-                            }
+                        @if(signUpForm.get('name')?.errors?.['minlength']){
+                        Minimum 3 characters required
+                        }
 
-                        </small>
+                    </small>
 
                     }
 
@@ -61,26 +52,21 @@
                         Email Address
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="email"
-                        type="email"
-                        placeholder="Enter your email"
-                    >
+                    <input class="form-input" formControlName="email" type="email" placeholder="Enter your email">
 
                     @if(signUpForm.get('email')?.touched && signUpForm.get('email')?.invalid){
 
-                        <small class="error-text">
+                    <small class="error-text">
 
-                            @if(signUpForm.get('email')?.errors?.['required']){
-                                Email is required
-                            }
+                        @if(signUpForm.get('email')?.errors?.['required']){
+                        Email is required
+                        }
 
-                            @if(signUpForm.get('email')?.errors?.['email']){
-                                Enter valid email
-                            }
+                        @if(signUpForm.get('email')?.errors?.['email']){
+                        Enter valid email
+                        }
 
-                        </small>
+                    </small>
 
                     }
 
@@ -92,26 +78,22 @@
                         Password
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="password"
-                        type="password"
-                        placeholder="Enter your password"
-                    >
+                    <input class="form-input" formControlName="password" type="password"
+                        placeholder="Enter your password">
 
                     @if(signUpForm.get('password')?.touched && signUpForm.get('password')?.invalid){
 
-                        <small class="error-text">
+                    <small class="error-text">
 
-                            @if(signUpForm.get('password')?.errors?.['required']){
-                                Password is required
-                            }
+                        @if(signUpForm.get('password')?.errors?.['required']){
+                        Password is required
+                        }
 
-                            @if(signUpForm.get('password')?.errors?.['minlength']){
-                                Minimum 6 characters required
-                            }
+                        @if(signUpForm.get('password')?.errors?.['minlength']){
+                        Minimum 6 characters required
+                        }
 
-                        </small>
+                    </small>
 
                     }
 
@@ -123,29 +105,25 @@
                         Confirm Password
                     </label>
 
-                    <input
-                        class="form-input"
-                        formControlName="confirmPassword"
-                        type="password"
-                        placeholder="Confirm your password"
-                    >
+                    <input class="form-input" formControlName="confirmPassword" type="password"
+                        placeholder="Confirm your password">
 
                     @if(signUpForm.get('confirmPassword')?.touched && signUpForm.get('confirmPassword')?.invalid){
 
-                        <small class="error-text">
-                            Confirm password is required
-                        </small>
+                    <small class="error-text">
+                        Confirm password is required
+                    </small>
 
                     }
 
                     @if(
-                        signUpForm.get('confirmPassword')?.touched &&
-                        signUpForm.get('password')?.value !== signUpForm.get('confirmPassword')?.value
+                    signUpForm.get('confirmPassword')?.touched &&
+                    signUpForm.get('password')?.value !== signUpForm.get('confirmPassword')?.value
                     ){
 
-                        <small class="error-text">
-                            Passwords do not match
-                        </small>
+                    <small class="error-text">
+                        Passwords do not match
+                    </small>
 
                     }
 

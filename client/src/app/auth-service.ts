@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 export class AuthService {
 
   http = inject(HttpClient);
-  router=inject(Router);
+  router = inject(Router);
   authChecked = signal(false);
   user = signal<any | null>(null);
 
@@ -42,16 +42,16 @@ export class AuthService {
 
 
   checkAuthStatus() {
-  this.http.get<any>(`${environment.baseUrl}/auth/userAuth`).subscribe({
-    next: (userData) => {
-      this.user.set(userData);
-      this.authChecked.set(true);
-    },
-    error: () => {
-      this.user.set(null);
-      this.authChecked.set(true);
-    }
-  });
-}
+    this.http.get<any>(`${environment.baseUrl}/auth/userAuth`).subscribe({
+      next: (userData) => {
+        this.user.set(userData);
+        this.authChecked.set(true);
+      },
+      error: () => {
+        this.user.set(null);
+        this.authChecked.set(true);
+      }
+    });
+  }
 
 }

@@ -29,7 +29,7 @@ export class Profile {
   rideService = inject(RideService);
   authService = inject(AuthService);
   router = inject(Router);
-  notify=inject(PopupService);
+  notify = inject(PopupService);
 
 
   pickup: string = '';

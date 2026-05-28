@@ -33,7 +33,7 @@ export class RideSuccess implements OnInit, OnDestroy {
   rating = signal(0);
   liveETA = signal<number | null>(null);
   liveED = signal<number | null>(null);
-  generatingETA=signal(false);
+  generatingETA = signal(false);
   ETA = signal<number | null>(null);
   ED = signal<number | null>(null);
 
@@ -45,45 +45,45 @@ export class RideSuccess implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-  const bookingId =
-    this.route.snapshot.paramMap.get('id');
+    const bookingId =
+      this.route.snapshot.paramMap.get('id');
 
-  if (!bookingId) {
-    this.goHome();
-    return;
+    if (!bookingId) {
+      this.goHome();
+      return;
+    }
+
+    this.rideService
+      .bookingProgress(bookingId)
+      .subscribe({
+
+        next: (res: any) => {
+
+          this.activeRide.set({
+            ...res.booking,
+            driver: res.driver,
+          });
+
+          this.sub = interval(1000).subscribe(() => {
+            this.updateRide();
+          });
+
+        },
+
+        error: () => {
+          this.goHome();
+        }
+
+      });
+
   }
-
-  this.rideService
-    .bookingProgress(bookingId)
-    .subscribe({
-
-      next: (res: any) => {
-
-        this.activeRide.set({
-          ...res.booking,
-          driver: res.driver,
-        });
-
-        this.sub = interval(1000).subscribe(() => {
-          this.updateRide();
-        });
-
-      },
-
-      error: () => {
-        this.goHome();
-      }
-
-    });
-
-}
 
   ngOnDestroy() {
     this.sub?.unsubscribe();
 
     if (this.etaInterval) {
-    clearInterval(this.etaInterval);
-  }
+      clearInterval(this.etaInterval);
+    }
 
   }
 
@@ -97,7 +97,7 @@ export class RideSuccess implements OnInit, OnDestroy {
 
     const remaining = expiryTime - Date.now();
 
-    if(ride.status==="requested"){
+    if (ride.status === "requested") {
       if (remaining <= 0) {
         this.progress.set(0);
         this.cancelRide();
@@ -117,120 +117,120 @@ export class RideSuccess implements OnInit, OnDestroy {
           driver: res.driver,
         }));
 
-        if(this.generatingETA() === false && this.ETA() === null && this.ED() === null){
+        if (this.generatingETA() === false && this.ETA() === null && this.ED() === null) {
           this.generateETA();
         }
       },
     });
   }
 
- generateETA() {
-  if (this.generatingETA()) return;
+  generateETA() {
+    if (this.generatingETA()) return;
 
-  this.generatingETA.set(true);
+    this.generatingETA.set(true);
 
-  const ride = this.activeRide();
+    const ride = this.activeRide();
 
-  if (!ride) {
-    this.generatingETA.set(false);
-    return;
-  }
+    if (!ride) {
+      this.generatingETA.set(false);
+      return;
+    }
 
-  const driverCoordinates = ride?.driver?.driverCoordinates;
-  const pickUpCoordinates = ride?.pickUpCoordinates;
+    const driverCoordinates = ride?.driver?.driverCoordinates;
+    const pickUpCoordinates = ride?.pickUpCoordinates;
 
-  if (!driverCoordinates || !pickUpCoordinates) {
-    this.generatingETA.set(false);
-    return;
-  }
+    if (!driverCoordinates || !pickUpCoordinates) {
+      this.generatingETA.set(false);
+      return;
+    }
 
- 
-  const start = {
-    lat: +driverCoordinates[0],
-    lng: +driverCoordinates[1],
-  };
 
-  const end = {
-    lat: +pickUpCoordinates[0],
-    lng: +pickUpCoordinates[1],
-  };
+    const start = {
+      lat: +driverCoordinates[0],
+      lng: +driverCoordinates[1],
+    };
 
-  this.routeService.getRoute(start, end).subscribe({
-    next: (res: any) => {
-      const route = res.routes?.[0];
+    const end = {
+      lat: +pickUpCoordinates[0],
+      lng: +pickUpCoordinates[1],
+    };
 
-      if (!route) {
+    this.routeService.getRoute(start, end).subscribe({
+      next: (res: any) => {
+        const route = res.routes?.[0];
+
+        if (!route) {
+          this.generatingETA.set(false);
+          return;
+        }
+
+        const distanceKm = Number((route.distance / 1000).toFixed(2));
+        const durationMin = Number((route.duration / 60).toFixed(0));
+
+        this.ETA.set(durationMin);
+        this.ED.set(distanceKm);
+        this.liveETA.set(durationMin);
+        this.liveED.set(distanceKm);
+
+        this.startETA();
+
         this.generatingETA.set(false);
-        return;
-      }
+      },
 
-      const distanceKm = Number((route.distance / 1000).toFixed(2));
-      const durationMin = Number((route.duration / 60).toFixed(0));
-
-      this.ETA.set(durationMin);
-      this.ED.set(distanceKm);
-      this.liveETA.set(durationMin);
-      this.liveED.set(distanceKm);
-
-      this.startETA();
-
-      this.generatingETA.set(false);
-    },
-
-    error: (err) => {
-      console.log("ETA error:", err);
-      this.generatingETA.set(false);
-    },
-  });
-}
+      error: (err) => {
+        console.log("ETA error:", err);
+        this.generatingETA.set(false);
+      },
+    });
+  }
 
   startETA() {
 
-  if (this.etaInterval) {
-    clearInterval(this.etaInterval);
-  }
-
-  this.etaInterval = setInterval(() => {
-
-    const currentETA = this.liveETA();
-    const currentED = this.liveED();
-
-    if (currentETA === null || currentED === null) {
-      return;
-    }
-
-    if (currentETA <= (1 / 12)) {
-
-      this.liveETA.set(0);
-      this.liveED.set(0);
-
+    if (this.etaInterval) {
       clearInterval(this.etaInterval);
-
-      return;
     }
 
-    const etaDecreasePerTick = 1 / 12;
+    this.etaInterval = setInterval(() => {
 
-    this.liveETA.set(
-      currentETA - etaDecreasePerTick
-    );
+      const currentETA = this.liveETA();
+      const currentED = this.liveED();
 
-    const decreasePerMinute =
-      (this.ED() || 0) / (this.ETA() || 1);
+      if (currentETA === null || currentED === null) {
+        return;
+      }
 
-    const decreasePer5Sec =
-      decreasePerMinute / 12;
+      if (currentETA <= (1 / 12)) {
 
-    const newDistance = Math.max(
-      0,
-      currentED - decreasePer5Sec
-    );
+        this.liveETA.set(0);
+        this.liveED.set(0);
 
-    this.liveED.set(newDistance);
+        clearInterval(this.etaInterval);
 
-  }, 5000);
+        return;
+      }
 
-}
+      const etaDecreasePerTick = 1 / 12;
+
+      this.liveETA.set(
+        currentETA - etaDecreasePerTick
+      );
+
+      const decreasePerMinute =
+        (this.ED() || 0) / (this.ETA() || 1);
+
+      const decreasePer5Sec =
+        decreasePerMinute / 12;
+
+      const newDistance = Math.max(
+        0,
+        currentED - decreasePer5Sec
+      );
+
+      this.liveED.set(newDistance);
+
+    }, 5000);
+
+  }
 
 
   cancelRide() {

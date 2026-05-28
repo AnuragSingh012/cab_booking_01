@@ -24,10 +24,10 @@ export class RideRequest {
   router = inject(Router);
   rideService = inject(RideService);
   locationService = inject(LocationService);
-  buildRouteService=inject(BuildRouteService);
-  authService=inject(AuthService);
-  mapRender=inject(MapRenderService);
-  notify=inject(PopupService);
+  buildRouteService = inject(BuildRouteService);
+  authService = inject(AuthService);
+  mapRender = inject(MapRenderService);
+  notify = inject(PopupService);
 
   pickup = '';
   drop = '';
@@ -35,7 +35,7 @@ export class RideRequest {
   pickupSuggestions: any[] = [];
   dropSuggestions: any[] = [];
 
-  message=this.rideService.msg;
+  message = this.rideService.msg;
 
   pickupSubject = new Subject<string>();
   dropSubject = new Subject<string>();
@@ -53,47 +53,47 @@ export class RideRequest {
 
   ngOnInit() {
     this.pickupSubject.pipe(
-  debounceTime(300),
-  switchMap(value => {
+      debounceTime(300),
+      switchMap(value => {
 
-    if (value.trim().length < 3) {
-      return of([]);
-    }
+        if (value.trim().length < 3) {
+          return of([]);
+        }
 
-    return this.locationService.searchLocation(value);
-  })
-)
-.subscribe({
-  next: (res: any) => {
-    this.pickupSuggestions = res || [];
-  },
-  error: () => {
-    this.notify.show('Failed to search pickup location');
-    this.pickupSuggestions = [];
-  }
-});
+        return this.locationService.searchLocation(value);
+      })
+    )
+      .subscribe({
+        next: (res: any) => {
+          this.pickupSuggestions = res || [];
+        },
+        error: () => {
+          this.notify.show('Failed to search pickup location');
+          this.pickupSuggestions = [];
+        }
+      });
 
 
     this.dropSubject.pipe(
-  debounceTime(300),
-  switchMap(value => {
-    if (value.trim().length < 3) {
-      return of([]);
-    }
-    return this.locationService.searchLocation(value);
-  })
+      debounceTime(300),
+      switchMap(value => {
+        if (value.trim().length < 3) {
+          return of([]);
+        }
+        return this.locationService.searchLocation(value);
+      })
 
-)
-.subscribe({
-  next: (res: any) => {
-    this.dropSuggestions = res || [];
-  },
+    )
+      .subscribe({
+        next: (res: any) => {
+          this.dropSuggestions = res || [];
+        },
 
-  error: () => {
-    this.notify.show('Failed to search drop location');
-    this.dropSuggestions = [];
-  }
-});
+        error: () => {
+          this.notify.show('Failed to search drop location');
+          this.dropSuggestions = [];
+        }
+      });
   }
 
   onPickupChange(value: string) {
@@ -116,61 +116,61 @@ export class RideRequest {
 
   rideRequest() {
 
-  this.rideService.mapLoading.set(true);
+    this.rideService.mapLoading.set(true);
 
-  this.buildRouteService.buildRoute(
+    this.buildRouteService.buildRoute(
 
-    this.pickup,
-    this.drop,
+      this.pickup,
+      this.drop,
 
-    (data: any) => {
+      (data: any) => {
 
-      if (data.distanceKm > 60) {
+        if (data.distanceKm > 60) {
 
-        this.rideService.msg.set(
-          "Sorry, we can’t process rides over 60 km"
+          this.rideService.msg.set(
+            "Sorry, we can’t process rides over 60 km"
+          );
+
+          this.rideService.mapLoading.set(false);
+
+          return;
+        }
+
+        this.rideService.updateRide({
+
+          pickup: this.pickup,
+          drop: this.drop,
+
+          pickUpCoordinates: [
+            data.start.lat,
+            data.start.lng
+          ],
+
+          dropCoordinates: [
+            data.end.lat,
+            data.end.lng
+          ],
+
+          distance: data.distanceKm,
+          duration: data.durationMin
+        });
+
+        const latlngs =
+          data.route.geometry.coordinates.map(
+            (c: any) => [c[1], c[0]]
+          );
+
+        this.mapRender.drawRoute(
+          latlngs,
+          data.start,
+          data.end
         );
 
         this.rideService.mapLoading.set(false);
 
-        return;
+        this.router.navigate(['vehicle']);
       }
+    );
+  }
 
-      this.rideService.updateRide({
-
-        pickup: this.pickup,
-        drop: this.drop,
-
-        pickUpCoordinates: [
-          data.start.lat,
-          data.start.lng
-        ],
-
-        dropCoordinates: [
-          data.end.lat,
-          data.end.lng
-        ],
-
-        distance: data.distanceKm,
-        duration: data.durationMin
-      });
-
-      const latlngs =
-        data.route.geometry.coordinates.map(
-          (c: any) => [c[1], c[0]]
-        );
-
-      this.mapRender.drawRoute(
-        latlngs,
-        data.start,
-        data.end
-      );
-
-      this.rideService.mapLoading.set(false);
-
-      this.router.navigate(['vehicle']);
-    }
-  );
-}
-  
 }

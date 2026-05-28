@@ -15,6 +15,6 @@ router.patch("/status", authMiddleware, toggleDriverStatus);
 
 router.patch("/location", authMiddleware, updateDriverLocation);
 
-router.patch("/reject",authMiddleware, rejectBooking)
+router.patch("/reject", authMiddleware, rejectBooking)
 
 module.exports = router;

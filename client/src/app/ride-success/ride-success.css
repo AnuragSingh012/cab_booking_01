@@ -165,7 +165,7 @@
 
 .cancel-btn,
 .feedback-card button,
-.ride-page > button {
+.ride-page>button {
     padding: 14px 20px;
     border: none;
     border-radius: 10px;
@@ -186,7 +186,7 @@
 }
 
 .feedback-card button:hover,
-.ride-page > button:hover {
+.ride-page>button:hover {
     opacity: 0.9;
 }
 

@@ -41,8 +41,7 @@ export class UserSignup {
       return;
     }
 
-    if ( this.signUpForm.value.password !== this.signUpForm.value.confirmPassword)
-    {
+    if (this.signUpForm.value.password !== this.signUpForm.value.confirmPassword) {
       this.notify.show('Passwords do not match');
       return;
     }
